@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Link } from 'react-router-dom';
+import { createPageUrl } from '@/utils';
 
 const navLinks = [
-  { label: 'Home', href: '#home' },
-  { label: 'About', href: '#about' },
-  { label: 'Featured', href: '#featured' },
-  { label: 'Resume', href: '#resume' },
-  { label: 'Projects', href: '#projects' },
-  { label: 'Shop', href: '#shop' },
-  { label: 'Contact', href: '#contact' },
+  { label: 'Home', href: '#home', type: 'anchor' },
+  { label: 'About', href: 'About', type: 'page' },
+  { label: 'Featured', href: '#featured', type: 'anchor' },
+  { label: 'Resume', href: '#resume', type: 'anchor' },
+  { label: 'Projects', href: '#projects', type: 'anchor' },
+  { label: 'Shop', href: '#shop', type: 'anchor' },
+  { label: 'Contact', href: '#contact', type: 'anchor' },
 ];
 
 export default function Navigation({ brandName = 'C8Matrix' }) {
@@ -64,18 +66,28 @@ export default function Navigation({ brandName = 'C8Matrix' }) {
             {/* Desktop Nav */}
             <div className="hidden lg:flex items-center gap-1">
               {navLinks.map((link) => (
-                <a
-                  key={link.href}
-                  href={link.href}
-                  onClick={(e) => { e.preventDefault(); scrollToSection(link.href); }}
-                  className={`px-4 py-2 text-sm font-medium tracking-wide transition-all duration-300 rounded-full ${
-                    activeSection === link.href.replace('#', '')
-                      ? 'text-white bg-white/10'
-                      : 'text-white/60 hover:text-white hover:bg-white/5'
-                  }`}
-                >
-                  {link.label}
-                </a>
+                link.type === 'page' ? (
+                  <Link
+                    key={link.href}
+                    to={createPageUrl(link.href)}
+                    className="px-4 py-2 text-sm font-medium tracking-wide transition-all duration-300 rounded-full text-white/60 hover:text-white hover:bg-white/5"
+                  >
+                    {link.label}
+                  </Link>
+                ) : (
+                  <a
+                    key={link.href}
+                    href={link.href}
+                    onClick={(e) => { e.preventDefault(); scrollToSection(link.href); }}
+                    className={`px-4 py-2 text-sm font-medium tracking-wide transition-all duration-300 rounded-full ${
+                      activeSection === link.href.replace('#', '')
+                        ? 'text-white bg-white/10'
+                        : 'text-white/60 hover:text-white hover:bg-white/5'
+                    }`}
+                  >
+                    {link.label}
+                  </a>
+                )
               ))}
             </div>
 
@@ -101,21 +113,32 @@ export default function Navigation({ brandName = 'C8Matrix' }) {
           >
             <div className="flex flex-col items-center gap-2 p-6">
               {navLinks.map((link, i) => (
-                <motion.a
-                  key={link.href}
-                  href={link.href}
-                  onClick={(e) => { e.preventDefault(); scrollToSection(link.href); }}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: i * 0.05 }}
-                  className={`w-full text-center py-4 text-lg font-medium tracking-wide transition-colors rounded-xl ${
-                    activeSection === link.href.replace('#', '')
-                      ? 'text-white bg-white/10'
-                      : 'text-white/60 hover:text-white hover:bg-white/5'
-                  }`}
-                >
-                  {link.label}
-                </motion.a>
+                link.type === 'page' ? (
+                  <Link
+                    key={link.href}
+                    to={createPageUrl(link.href)}
+                    onClick={() => setIsMobileOpen(false)}
+                    className="w-full text-center py-4 text-lg font-medium tracking-wide transition-colors rounded-xl text-white/60 hover:text-white hover:bg-white/5"
+                  >
+                    {link.label}
+                  </Link>
+                ) : (
+                  <motion.a
+                    key={link.href}
+                    href={link.href}
+                    onClick={(e) => { e.preventDefault(); scrollToSection(link.href); }}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: i * 0.05 }}
+                    className={`w-full text-center py-4 text-lg font-medium tracking-wide transition-colors rounded-xl ${
+                      activeSection === link.href.replace('#', '')
+                        ? 'text-white bg-white/10'
+                        : 'text-white/60 hover:text-white hover:bg-white/5'
+                    }`}
+                  >
+                    {link.label}
+                  </motion.a>
+                )
               ))}
             </div>
           </motion.div>

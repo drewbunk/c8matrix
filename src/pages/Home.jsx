@@ -4,7 +4,6 @@ import { base44 } from '@/api/base44Client';
 
 import Navigation from '@/components/home/Navigation';
 import HeroSection from '@/components/home/HeroSection';
-import AboutSection from '@/components/home/AboutSection';
 import FeaturedSection from '@/components/home/FeaturedSection';
 import ResumeSection from '@/components/home/ResumeSection';
 import ProjectsSection from '@/components/home/ProjectsSection';
@@ -47,8 +46,6 @@ export default function Home() {
       <Navigation brandName={siteSettings.brandName} />
       
       <HeroSection settings={siteSettings} />
-      
-      <AboutSection settings={siteSettings} />
       
       <FeaturedSection featuredContent={featuredContent || []} />
       
