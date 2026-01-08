@@ -5,6 +5,7 @@ import { base44 } from '@/api/base44Client';
 import Navigation from '@/components/home/Navigation';
 import HeroSection from '@/components/home/HeroSection';
 import AboutSection from '@/components/home/AboutSection';
+import VideoReelSection from '@/components/home/VideoReelSection';
 import FeaturedSection from '@/components/home/FeaturedSection';
 import ProjectsSection from '@/components/home/ProjectsSection';
 import ShopSection from '@/components/home/ShopSection';
@@ -43,6 +44,8 @@ export default function Home() {
       <HeroSection settings={siteSettings} />
       
       <AboutSection settings={siteSettings} />
+      
+      <VideoReelSection settings={siteSettings} />
       
       <FeaturedSection featuredContent={featuredContent || []} />
       
