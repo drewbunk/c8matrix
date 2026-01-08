@@ -11,7 +11,7 @@ import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 import { 
   Settings, FileText, Briefcase, Layers, ShoppingBag, MessageSquare, 
-  Plus, Trash2, Save, ArrowLeft, Eye, GripVertical, Lock, Video
+  Plus, Trash2, Save, ArrowLeft, Eye, GripVertical, Lock, Video, Image
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
@@ -538,6 +538,11 @@ export default function Admin() {
     { key: 'sortOrder', label: 'Sort Order', type: 'number' },
   ];
 
+  const aboutPhotoSchema = [
+    { key: 'imageUrl', label: 'Image URL', type: 'text' },
+    { key: 'sortOrder', label: 'Sort Order', type: 'number' },
+  ];
+
   return (
     <div className="min-h-screen bg-zinc-950">
       {/* Header */}
@@ -590,6 +595,10 @@ export default function Admin() {
             <TabsTrigger value="products" className="data-[state=active]:bg-white data-[state=active]:text-black">
               <ShoppingBag className="w-4 h-4 mr-2" />
               Products
+            </TabsTrigger>
+            <TabsTrigger value="aboutphotos" className="data-[state=active]:bg-white data-[state=active]:text-black">
+              <Image className="w-4 h-4 mr-2" />
+              About Photos
             </TabsTrigger>
             <TabsTrigger value="messages" className="data-[state=active]:bg-white data-[state=active]:text-black">
               <MessageSquare className="w-4 h-4 mr-2" />
@@ -687,6 +696,27 @@ export default function Admin() {
                     </div>
                   )}
                   emptyMessage="No products yet. Add your first product!"
+                />
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="aboutphotos">
+            <Card className="bg-zinc-900 border-zinc-800">
+              <CardHeader>
+                <CardTitle className="text-white">About Page Cinematic Photos</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <CRUDList
+                  entityName="AboutPhoto"
+                  schema={aboutPhotoSchema}
+                  renderItem={(item) => (
+                    <div className="flex items-center gap-4">
+                      <img src={item.imageUrl} alt="Preview" className="w-32 h-16 object-cover rounded" />
+                      <p className="text-white/60 text-sm">Order: {item.sortOrder || 0}</p>
+                    </div>
+                  )}
+                  emptyMessage="No photos yet. Add cinematic photos for the About page!"
                 />
               </CardContent>
             </Card>
