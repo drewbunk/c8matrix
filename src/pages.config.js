@@ -1,14 +1,14 @@
 import About from './pages/About';
-import Home from './pages/Home';
 import Admin from './pages/Admin';
+import Home from './pages/Home';
 import Resume from './pages/Resume';
 import __Layout from './Layout.jsx';
 
 
 export const PAGES = {
     "About": About,
-    "Home": Home,
     "Admin": Admin,
+    "Home": Home,
     "Resume": Resume,
 }
 
