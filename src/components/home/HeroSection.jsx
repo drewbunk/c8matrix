@@ -62,51 +62,61 @@ export default function HeroSection({ settings }) {
   };
 
   const renderVideo = () => {
-    if (heroVideoType === 'youtube' && heroVideoUrl) {
-      const videoId = getYouTubeId(heroVideoUrl);
-      if (videoId) {
-        return (
-          <iframe
-            src={`https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&loop=1&playlist=${videoId}&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1`}
-            className="absolute inset-0 w-full h-full object-cover scale-150"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
-            title="Hero Video"
-          />
-        );
-      }
-    }
-    
-    if (heroVideoType === 'vimeo' && heroVideoUrl) {
-      const videoId = getVimeoId(heroVideoUrl);
-      if (videoId) {
-        return (
-          <iframe
-            src={`https://player.vimeo.com/video/${videoId}?autoplay=1&muted=1&loop=1&background=1`}
-            className="absolute inset-0 w-full h-full object-cover scale-150"
-            allow="autoplay; fullscreen"
-            allowFullScreen
-            title="Hero Video"
-          />
-        );
-      }
-    }
-    
-    if (heroVideoType === 'mp4_url' && heroVideoUrl) {
-      return (
-        <video
-          ref={videoRef}
-          autoPlay
-          loop
-          muted={isMuted}
-          playsInline
-          className="absolute inset-0 w-full h-full object-cover"
-          poster={heroPosterImageUrl}
-        >
-          <source src={heroVideoUrl} type="video/mp4" />
-        </video>
-      );
-    }
+    if (heroVideoType === 'youtube' && heroVideoUrl && isVideoActive) {
+            const videoId = getYouTubeId(heroVideoUrl);
+            if (videoId) {
+              return (
+                <iframe
+                  ref={iframeRef}
+                  src={`https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&loop=0&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1&enablejsapi=1`}
+                  className="absolute inset-0 w-full h-full object-cover scale-150"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                  title="Hero Video"
+                  onLoad={() => {
+                    // Set a timeout for approximate video end (adjust duration as needed)
+                    setTimeout(() => {
+                      setIsVideoActive(false);
+                      pauseTimeoutRef.current = setTimeout(() => {
+                        setIsVideoActive(true);
+                      }, 30000);
+                    }, 60000); // Assumes ~60s video, adjust as needed
+                  }}
+                />
+              );
+            }
+          }
+
+          if (heroVideoType === 'vimeo' && heroVideoUrl && isVideoActive) {
+            const videoId = getVimeoId(heroVideoUrl);
+            if (videoId) {
+              return (
+                <iframe
+                  src={`https://player.vimeo.com/video/${videoId}?autoplay=1&muted=1&loop=0&background=1`}
+                  className="absolute inset-0 w-full h-full object-cover scale-150"
+                  allow="autoplay; fullscreen"
+                  allowFullScreen
+                  title="Hero Video"
+                />
+              );
+            }
+          }
+
+          if (heroVideoType === 'mp4_url' && heroVideoUrl && isVideoActive) {
+            return (
+              <video
+                ref={videoRef}
+                autoPlay
+                muted={isMuted}
+                playsInline
+                className="absolute inset-0 w-full h-full object-cover"
+                poster={heroPosterImageUrl}
+                onEnded={handleVideoEnded}
+              >
+                <source src={heroVideoUrl} type="video/mp4" />
+              </video>
+            );
+          }
 
     // Fallback gradient background
     return (
