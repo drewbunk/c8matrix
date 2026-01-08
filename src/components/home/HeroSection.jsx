@@ -97,11 +97,11 @@ export default function HeroSection({ settings }) {
       <div className="absolute inset-0">
         <div className="absolute inset-0 flex animate-hero-carousel">
           {[
-            "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/695f1f19128f966dc5681717/7ef042a33_17cb0dd5-fc9d-411c-b0d1-39704a003931.png",
-            "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/695f1f19128f966dc5681717/7ef042a33_17cb0dd5-fc9d-411c-b0d1-39704a003931.png"
+            "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/695f1f19128f966dc5681717/ca43c6264_acce0e4e-9f4e-425f-bd03-c01ed55916f1.png",
+            "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/695f1f19128f966dc5681717/aec71cd38_17cb0dd5-fc9d-411c-b0d1-39704a003931.png"
           ].concat([
-            "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/695f1f19128f966dc5681717/7ef042a33_17cb0dd5-fc9d-411c-b0d1-39704a003931.png",
-            "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/695f1f19128f966dc5681717/7ef042a33_17cb0dd5-fc9d-411c-b0d1-39704a003931.png"
+            "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/695f1f19128f966dc5681717/ca43c6264_acce0e4e-9f4e-425f-bd03-c01ed55916f1.png",
+            "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/695f1f19128f966dc5681717/aec71cd38_17cb0dd5-fc9d-411c-b0d1-39704a003931.png"
           ]).map((img, i) => (
             <img 
               key={i}
@@ -123,7 +123,7 @@ export default function HeroSection({ settings }) {
           100% { transform: translateX(-50%); }
         }
         .animate-hero-carousel {
-          animation: hero-carousel 20s linear infinite;
+          animation: hero-carousel 10s linear infinite;
         }
       `}</style>
 
