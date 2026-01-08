@@ -93,41 +93,18 @@ export default function HeroSection({ settings }) {
 
   return (
     <section id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Image Background Carousel */}
+      {/* Image Background */}
       <div className="absolute inset-0">
-        <div className="absolute inset-0 flex animate-hero-carousel">
-          {[
-            "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/695f1f19128f966dc5681717/ca43c6264_acce0e4e-9f4e-425f-bd03-c01ed55916f1.png",
-            "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/695f1f19128f966dc5681717/aec71cd38_17cb0dd5-fc9d-411c-b0d1-39704a003931.png",
-            "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/695f1f19128f966dc5681717/d64f5dc3a_756B5118-82F5-4D2F-954B-DE5679076D2F.jpg"
-          ].concat([
-            "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/695f1f19128f966dc5681717/ca43c6264_acce0e4e-9f4e-425f-bd03-c01ed55916f1.png",
-            "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/695f1f19128f966dc5681717/aec71cd38_17cb0dd5-fc9d-411c-b0d1-39704a003931.png",
-            "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/695f1f19128f966dc5681717/d64f5dc3a_756B5118-82F5-4D2F-954B-DE5679076D2F.jpg"
-          ]).map((img, i) => (
-            <img 
-              key={i}
-              src={img}
-              alt="Hero Background"
-              className="w-full h-full object-cover object-center flex-shrink-0"
-            />
-          ))}
-        </div>
+        <img 
+          src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/695f1f19128f966dc5681717/d64f5dc3a_756B5118-82F5-4D2F-954B-DE5679076D2F.jpg"
+          alt="Hero Background"
+          className="absolute inset-0 w-full h-full object-cover object-center"
+        />
         {/* Overlays */}
         <div className="absolute inset-0 bg-black/50" />
         <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent" />
         <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-transparent to-black/60" />
       </div>
-      
-      <style>{`
-        @keyframes hero-carousel {
-          0% { transform: translateX(0); }
-          100% { transform: translateX(-50%); }
-        }
-        .animate-hero-carousel {
-          animation: hero-carousel 30s linear infinite;
-        }
-      `}</style>
 
       {/* Content */}
       <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8 text-center">
