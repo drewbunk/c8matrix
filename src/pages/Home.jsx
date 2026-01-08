@@ -6,7 +6,6 @@ import Navigation from '@/components/home/Navigation';
 import HeroSection from '@/components/home/HeroSection';
 import AboutSection from '@/components/home/AboutSection';
 import FeaturedSection from '@/components/home/FeaturedSection';
-import ResumeSection from '@/components/home/ResumeSection';
 import ProjectsSection from '@/components/home/ProjectsSection';
 import ShopSection from '@/components/home/ShopSection';
 import ContactSection from '@/components/home/ContactSection';
@@ -22,11 +21,6 @@ export default function Home() {
   const { data: featuredContent } = useQuery({
     queryKey: ['featuredContent'],
     queryFn: () => base44.entities.FeaturedContent.list(),
-  });
-
-  const { data: experiences } = useQuery({
-    queryKey: ['experiences'],
-    queryFn: () => base44.entities.Experience.list(),
   });
 
   const { data: projects } = useQuery({
@@ -51,11 +45,6 @@ export default function Home() {
       <AboutSection settings={siteSettings} />
       
       <FeaturedSection featuredContent={featuredContent || []} />
-      
-      <ResumeSection 
-        experiences={experiences || []} 
-        resumePdfUrl={siteSettings.resumePdfUrl}
-      />
       
       <ProjectsSection projects={projects || []} />
       

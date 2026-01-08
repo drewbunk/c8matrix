@@ -1,13 +1,15 @@
+import About from './pages/About';
 import Home from './pages/Home';
 import Admin from './pages/Admin';
-import About from './pages/About';
+import Resume from './pages/Resume';
 import __Layout from './Layout.jsx';
 
 
 export const PAGES = {
+    "About": About,
     "Home": Home,
     "Admin": Admin,
-    "About": About,
+    "Resume": Resume,
 }
 
 export const pagesConfig = {
