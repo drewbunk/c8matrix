@@ -139,23 +139,6 @@ export default function HeroSection({ settings }) {
         </motion.div>
       </div>
 
-      {/* Scroll Indicator */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.5, duration: 1 }}
-        className="absolute bottom-10 left-1/2 -translate-x-1/2"
-      >
-        <motion.button
-          onClick={() => scrollToSection('#about')}
-          animate={{ y: [0, 8, 0] }}
-          transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
-          className="text-white/50 hover:text-white transition-colors"
-        >
-          <ChevronDown size={32} />
-        </motion.button>
-      </motion.div>
-
       {/* Video Controls (for mp4) */}
       {heroVideoType === 'mp4_url' && heroVideoUrl && (
         <button
