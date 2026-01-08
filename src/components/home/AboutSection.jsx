@@ -69,19 +69,11 @@ export default function AboutSection({ settings }) {
             className="relative"
           >
             <div className="aspect-[4/3] rounded-2xl overflow-hidden bg-zinc-900">
-              {headshotImageUrl ? (
-                <img
-                  src={headshotImageUrl}
-                  alt={fullName}
-                  className="w-full h-full object-cover"
-                />
-              ) : (
-                <div className="w-full h-full bg-gradient-to-br from-zinc-800 to-zinc-900 flex items-center justify-center">
-                  <span className="text-white/20 text-6xl font-bold">
-                    {fullName?.charAt(0)}
-                  </span>
-                </div>
-              )}
+              <img
+                src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/695f1f19128f966dc5681717/799bc47ad_bc1c2479-b4fa-40c3-b0ad-cad4394b0a9b.png"
+                alt={fullName}
+                className="w-full h-full object-cover"
+              />
             </div>
             {/* Decorative elements */}
             <div className="absolute -bottom-6 -right-6 w-32 h-32 border border-white/10 rounded-2xl -z-10" />
