@@ -381,52 +381,92 @@ function CRUDList({ entityName, schema, renderItem, emptyMessage }) {
                 <Label className="text-white/60">{field.label}</Label>
                 {field.type === 'image-upload' ? (
                   <div className="space-y-2">
-                    <div className="flex gap-2">
-                      <label className="flex-1">
-                        <div className="flex items-center justify-center gap-2 px-4 py-2 bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 rounded-md cursor-pointer transition-colors">
-                          <Upload className="w-4 h-4 text-white/60" />
-                          <span className="text-white/60 text-sm">
-                            {isUploading ? 'Uploading...' : 'Upload Image'}
-                          </span>
+                    <label 
+                      className="block"
+                      onDragOver={(e) => {
+                        e.preventDefault();
+                        e.currentTarget.classList.add('border-white');
+                      }}
+                      onDragLeave={(e) => {
+                        e.currentTarget.classList.remove('border-white');
+                      }}
+                      onDrop={async (e) => {
+                        e.preventDefault();
+                        e.currentTarget.classList.remove('border-white');
+                        const file = e.dataTransfer.files?.[0];
+                        if (file && file.type.startsWith('image/')) {
+                          try {
+                            setIsUploading(true);
+                            const { file_url } = await base44.integrations.Core.UploadFile({ file });
+                            setFormData({ ...formData, [field.key]: file_url });
+                            toast.success('Image uploaded successfully');
+                          } catch (error) {
+                            toast.error('Failed to upload image');
+                          } finally {
+                            setIsUploading(false);
+                          }
+                        }
+                      }}
+                    >
+                      <div className="flex flex-col items-center justify-center gap-3 px-6 py-8 bg-zinc-800 hover:bg-zinc-750 border-2 border-dashed border-zinc-700 rounded-lg cursor-pointer transition-all">
+                        <Upload className="w-8 h-8 text-white/40" />
+                        <div className="text-center">
+                          <p className="text-white/60 text-sm font-medium">
+                            {isUploading ? 'Uploading...' : 'Click to upload or drag and drop'}
+                          </p>
+                          <p className="text-white/40 text-xs mt-1">
+                            PNG, JPG, GIF up to 10MB
+                          </p>
                         </div>
-                        <input
-                          type="file"
-                          accept="image/*"
-                          className="hidden"
-                          disabled={isUploading}
-                          onChange={async (e) => {
-                            const file = e.target.files?.[0];
-                            if (file) {
-                              try {
-                                setIsUploading(true);
-                                const { file_url } = await base44.integrations.Core.UploadFile({ file });
-                                setFormData({ ...formData, [field.key]: file_url });
-                                toast.success('Image uploaded successfully');
-                              } catch (error) {
-                                toast.error('Failed to upload image');
-                              } finally {
-                                setIsUploading(false);
-                              }
+                      </div>
+                      <input
+                        type="file"
+                        accept="image/*"
+                        className="hidden"
+                        disabled={isUploading}
+                        onChange={async (e) => {
+                          const file = e.target.files?.[0];
+                          if (file) {
+                            try {
+                              setIsUploading(true);
+                              const { file_url } = await base44.integrations.Core.UploadFile({ file });
+                              setFormData({ ...formData, [field.key]: file_url });
+                              toast.success('Image uploaded successfully');
+                            } catch (error) {
+                              toast.error('Failed to upload image');
+                            } finally {
+                              setIsUploading(false);
                             }
-                          }}
-                        />
-                      </label>
-                    </div>
+                          }
+                        }}
+                      />
+                    </label>
                     {formData[field.key] && (
-                      <div className="mt-2">
+                      <div className="relative mt-2 group">
                         <img 
                           src={formData[field.key]} 
                           alt="Preview" 
                           className="w-full max-w-md h-48 object-cover rounded-lg border border-white/20"
                         />
+                        <Button
+                          type="button"
+                          variant="destructive"
+                          size="sm"
+                          className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity"
+                          onClick={() => setFormData({ ...formData, [field.key]: '' })}
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </Button>
                       </div>
                     )}
-                    <Input
-                      value={formData[field.key] || ''}
-                      onChange={(e) => setFormData({ ...formData, [field.key]: e.target.value })}
-                      className="bg-zinc-800 border-zinc-700 text-white"
-                      placeholder="Or paste image URL"
-                    />
+                    <div className="relative">
+                      <Input
+                        value={formData[field.key] || ''}
+                        onChange={(e) => setFormData({ ...formData, [field.key]: e.target.value })}
+                        className="bg-zinc-800 border-zinc-700 text-white"
+                        placeholder="Or paste image URL"
+                      />
+                    </div>
                   </div>
                 ) : field.type === 'textarea' ? (
                   <Textarea
