@@ -14,7 +14,13 @@ export default function About() {
     queryFn: () => base44.entities.SiteSettings.list(),
   });
 
+  const { data: photos } = useQuery({
+    queryKey: ['aboutPhotos'],
+    queryFn: () => base44.entities.AboutPhoto.list(),
+  });
+
   const siteSettings = settings?.[0] || {};
+  const sortedPhotos = [...(photos || [])].sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0));
 
   return (
     <div className="min-h-screen bg-black text-white">
@@ -37,54 +43,55 @@ export default function About() {
 
       {/* Content */}
       <div className="pt-20">
-        {/* Hero Photo Grid */}
-        <section className="py-20 px-6 lg:px-8">
-          <div className="max-w-7xl mx-auto">
-            <div className="grid md:grid-cols-3 gap-6">
-              <motion.div
-                initial={{ opacity: 0, y: 50 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.1 }}
-                className="relative aspect-[3/4] overflow-hidden rounded-2xl group"
-              >
-                <img
-                  src={siteSettings.headshotImageUrl || 'https://images.unsplash.com/photo-1614200179396-2bdb77ebf81b?w=800'}
-                  alt="Photo 1"
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
-              </motion.div>
-
-              <motion.div
-                initial={{ opacity: 0, y: 50 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.2 }}
-                className="relative aspect-[3/4] overflow-hidden rounded-2xl group"
-              >
-                <img
-                  src={siteSettings.headshotImageUrl || 'https://images.unsplash.com/photo-1614200187524-dc4b892acf16?w=800'}
-                  alt="Photo 2"
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
-              </motion.div>
-
-              <motion.div
-                initial={{ opacity: 0, y: 50 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.3 }}
-                className="relative aspect-[3/4] overflow-hidden rounded-2xl group"
-              >
-                <img
-                  src={siteSettings.headshotImageUrl || 'https://images.unsplash.com/photo-1614200343593-a7e19e4e9a3f?w=800'}
-                  alt="Photo 3"
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
-              </motion.div>
+        {/* Cinematic Photo Carousel */}
+        <section className="py-20 overflow-hidden bg-black">
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1 }}
+            className="relative"
+          >
+            <div className="flex gap-8 animate-scroll">
+              {/* Double the photos for seamless loop */}
+              {[...sortedPhotos, ...sortedPhotos].map((photo, i) => (
+                <div
+                  key={`${photo.id}-${i}`}
+                  className="relative flex-shrink-0 w-[85vw] md:w-[70vw] lg:w-[60vw] aspect-[21/9] rounded-2xl overflow-hidden group"
+                >
+                  <img
+                    src={photo.imageUrl}
+                    alt={`Cinematic photo ${i + 1}`}
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-black/20" />
+                </div>
+              ))}
             </div>
-          </div>
+            
+            {/* Gradient overlays for fade effect */}
+            <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-black to-transparent pointer-events-none" />
+            <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-black to-transparent pointer-events-none" />
+          </motion.div>
         </section>
+
+        <style>{`
+          @keyframes scroll {
+            0% {
+              transform: translateX(0);
+            }
+            100% {
+              transform: translateX(calc(-100% / 2 - 1rem));
+            }
+          }
+          
+          .animate-scroll {
+            animation: scroll 40s linear infinite;
+          }
+          
+          .animate-scroll:hover {
+            animation-play-state: paused;
+          }
+        `}</style>
 
         {/* About Section */}
         <section className="py-20 px-6 lg:px-8 bg-zinc-950">
