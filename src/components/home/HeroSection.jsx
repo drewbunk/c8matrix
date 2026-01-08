@@ -123,10 +123,10 @@ export default function HeroSection({ settings }) {
           {/* CTAs */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
             <Button
-              onClick={() => scrollToSection(primaryCTALink)}
+              onClick={() => scrollToSection('#projects')}
               className="bg-white text-black hover:bg-white/90 px-8 py-6 text-base font-semibold tracking-wide rounded-full transition-all duration-300 hover:scale-105"
             >
-              {primaryCTAText}
+              Projects
             </Button>
             <Button
               onClick={() => scrollToSection(secondaryCTALink)}
