@@ -98,7 +98,7 @@ export default function HeroSection({ settings }) {
         <img 
           src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/695f1f19128f966dc5681717/7ef042a33_17cb0dd5-fc9d-411c-b0d1-39704a003931.png"
           alt="F1 Car Background"
-          className="absolute inset-0 w-full h-full object-cover"
+          className="absolute inset-0 w-full h-full object-cover object-center"
         />
         {/* Overlays */}
         <div className="absolute inset-0 bg-black/50" />
