@@ -123,7 +123,7 @@ export default function HeroSection({ settings }) {
           100% { transform: translateX(-50%); }
         }
         .animate-hero-carousel {
-          animation: hero-carousel 10s linear infinite;
+          animation: hero-carousel 20s linear infinite;
         }
       `}</style>
 
