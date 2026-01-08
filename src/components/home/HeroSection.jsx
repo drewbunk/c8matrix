@@ -26,7 +26,7 @@ export default function HeroSection({ settings }) {
   // Handle video loop with 30-second pause
   const handleVideoEnded = () => {
     setIsVideoActive(false);
-    pauseTimeoutRef.useRef = setTimeout(() => {
+    pauseTimeoutRef.current = setTimeout(() => {
       setIsVideoActive(true);
       if (videoRef.current) {
         videoRef.current.currentTime = 0;
