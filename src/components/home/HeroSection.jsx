@@ -18,7 +18,30 @@ function getVimeoId(url) {
 export default function HeroSection({ settings }) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(true);
+  const [isVideoActive, setIsVideoActive] = useState(true);
   const videoRef = useRef(null);
+  const iframeRef = useRef(null);
+  const pauseTimeoutRef = useRef(null);
+
+  // Handle video loop with 30-second pause
+  const handleVideoEnded = () => {
+    setIsVideoActive(false);
+    pauseTimeoutRef.useRef = setTimeout(() => {
+      setIsVideoActive(true);
+      if (videoRef.current) {
+        videoRef.current.currentTime = 0;
+        videoRef.current.play();
+      }
+    }, 30000); // 30 seconds
+  };
+
+  React.useEffect(() => {
+    return () => {
+      if (pauseTimeoutRef.current) {
+        clearTimeout(pauseTimeoutRef.current);
+      }
+    };
+  }, []);
 
   const {
     brandName = 'C8Matrix',
