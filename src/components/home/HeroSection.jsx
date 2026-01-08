@@ -93,14 +93,26 @@ export default function HeroSection({ settings }) {
 
   return (
     <section id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Video Background */}
+      {/* Background Image */}
       <div className="absolute inset-0">
-        {renderVideo()}
+        <img 
+          src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/695f1f19128f966dc5681717/16766d9b8_acce0e4e-9f4e-425f-bd03-c01ed55916f1.png"
+          alt="Background"
+          className="w-full h-full object-cover"
+        />
         {/* Overlays */}
-        <div className="absolute inset-0 bg-black/50" />
-        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent" />
-        <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-transparent to-black/60" />
+        <div className="absolute inset-0 bg-black/60" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent" />
       </div>
+      
+      {/* Video Background (if configured) */}
+      {heroVideoUrl && (
+        <div className="absolute inset-0">
+          {renderVideo()}
+          {/* Overlays */}
+          <div className="absolute inset-0 bg-black/40" />
+        </div>
+      )}
 
       {/* Content */}
       <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8 text-center">
