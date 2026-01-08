@@ -11,8 +11,9 @@ import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 import { 
   Settings, FileText, Briefcase, Layers, ShoppingBag, MessageSquare, 
-  Plus, Trash2, Save, ArrowLeft, Eye, GripVertical, Lock, Video, Image
+  Plus, Trash2, Save, ArrowLeft, Eye, GripVertical, Lock, Video, Image, Upload
 } from 'lucide-react';
+import { toast } from 'sonner';
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 
@@ -321,6 +322,7 @@ function CRUDList({ entityName, schema, renderItem, emptyMessage }) {
 
   const [editingItem, setEditingItem] = useState(null);
   const [formData, setFormData] = useState({});
+  const [isUploading, setIsUploading] = useState(false);
 
   const createMutation = useMutation({
     mutationFn: (data) => base44.entities[entityName].create(data),
@@ -377,7 +379,56 @@ function CRUDList({ entityName, schema, renderItem, emptyMessage }) {
             {schema.map(field => (
               <div key={field.key} className="mb-4">
                 <Label className="text-white/60">{field.label}</Label>
-                {field.type === 'textarea' ? (
+                {field.type === 'image-upload' ? (
+                  <div className="space-y-2">
+                    <div className="flex gap-2">
+                      <label className="flex-1">
+                        <div className="flex items-center justify-center gap-2 px-4 py-2 bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 rounded-md cursor-pointer transition-colors">
+                          <Upload className="w-4 h-4 text-white/60" />
+                          <span className="text-white/60 text-sm">
+                            {isUploading ? 'Uploading...' : 'Upload Image'}
+                          </span>
+                        </div>
+                        <input
+                          type="file"
+                          accept="image/*"
+                          className="hidden"
+                          disabled={isUploading}
+                          onChange={async (e) => {
+                            const file = e.target.files?.[0];
+                            if (file) {
+                              try {
+                                setIsUploading(true);
+                                const { file_url } = await base44.integrations.Core.UploadFile({ file });
+                                setFormData({ ...formData, [field.key]: file_url });
+                                toast.success('Image uploaded successfully');
+                              } catch (error) {
+                                toast.error('Failed to upload image');
+                              } finally {
+                                setIsUploading(false);
+                              }
+                            }
+                          }}
+                        />
+                      </label>
+                    </div>
+                    {formData[field.key] && (
+                      <div className="mt-2">
+                        <img 
+                          src={formData[field.key]} 
+                          alt="Preview" 
+                          className="w-full max-w-md h-48 object-cover rounded-lg border border-white/20"
+                        />
+                      </div>
+                    )}
+                    <Input
+                      value={formData[field.key] || ''}
+                      onChange={(e) => setFormData({ ...formData, [field.key]: e.target.value })}
+                      className="bg-zinc-800 border-zinc-700 text-white"
+                      placeholder="Or paste image URL"
+                    />
+                  </div>
+                ) : field.type === 'textarea' ? (
                   <Textarea
                     value={formData[field.key] || ''}
                     onChange={(e) => setFormData({ ...formData, [field.key]: e.target.value })}
@@ -521,25 +572,27 @@ export default function Admin() {
     { key: 'type', label: 'Type', type: 'select', options: ['App', 'Service', 'Content', 'Partnership'] },
     { key: 'shortDescription', label: 'Short Description', type: 'text' },
     { key: 'longDescription', label: 'Long Description', type: 'textarea' },
-    { key: 'thumbnailImageUrl', label: 'Thumbnail Image URL', type: 'text' },
-    { key: 'linkUrl', label: 'Link URL', type: 'text' },
+    { key: 'thumbnailImageUrl', label: 'Thumbnail Image', type: 'image-upload' },
+    { key: 'linkUrl', label: 'Project Link URL', type: 'text', placeholder: 'https://example.com' },
     { key: 'tags', label: 'Tags (one per line)', type: 'array' },
     { key: 'isFeatured', label: 'Featured', type: 'switch' },
+    { key: 'sortOrder', label: 'Sort Order', type: 'number' },
+  ];
+
+
+
+  const aboutPhotoSchema = [
+    { key: 'imageUrl', label: 'Cinematic Photo', type: 'image-upload' },
     { key: 'sortOrder', label: 'Sort Order', type: 'number' },
   ];
 
   const productSchema = [
     { key: 'title', label: 'Product Title', type: 'text' },
     { key: 'priceText', label: 'Price Text', type: 'text', placeholder: 'e.g., $29.99' },
-    { key: 'imageUrl', label: 'Image URL', type: 'text' },
-    { key: 'productUrl', label: 'Product URL', type: 'text' },
+    { key: 'imageUrl', label: 'Product Image', type: 'image-upload' },
+    { key: 'productUrl', label: 'Product URL', type: 'text', placeholder: 'https://store.example.com/product' },
     { key: 'badge', label: 'Badge', type: 'text', placeholder: 'e.g., Best Seller' },
     { key: 'isFeatured', label: 'Featured', type: 'switch' },
-    { key: 'sortOrder', label: 'Sort Order', type: 'number' },
-  ];
-
-  const aboutPhotoSchema = [
-    { key: 'imageUrl', label: 'Image URL', type: 'text' },
     { key: 'sortOrder', label: 'Sort Order', type: 'number' },
   ];
 
