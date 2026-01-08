@@ -18,30 +18,7 @@ function getVimeoId(url) {
 export default function HeroSection({ settings }) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(true);
-  const [isVideoActive, setIsVideoActive] = useState(true);
   const videoRef = useRef(null);
-  const iframeRef = useRef(null);
-  const pauseTimeoutRef = useRef(null);
-
-  // Handle video loop with 30-second pause
-  const handleVideoEnded = () => {
-    setIsVideoActive(false);
-    pauseTimeoutRef.current = setTimeout(() => {
-      setIsVideoActive(true);
-      if (videoRef.current) {
-        videoRef.current.currentTime = 0;
-        videoRef.current.play();
-      }
-    }, 30000); // 30 seconds
-  };
-
-  React.useEffect(() => {
-    return () => {
-      if (pauseTimeoutRef.current) {
-        clearTimeout(pauseTimeoutRef.current);
-      }
-    };
-  }, []);
 
   const {
     brandName = 'C8Matrix',
@@ -62,61 +39,51 @@ export default function HeroSection({ settings }) {
   };
 
   const renderVideo = () => {
-    if (heroVideoType === 'youtube' && heroVideoUrl && isVideoActive) {
-            const videoId = getYouTubeId(heroVideoUrl);
-            if (videoId) {
-              return (
-                <iframe
-                  ref={iframeRef}
-                  src={`https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&loop=0&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1&enablejsapi=1`}
-                  className="absolute inset-0 w-full h-full object-cover scale-150"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                  title="Hero Video"
-                  onLoad={() => {
-                    // Set a timeout for approximate video end (adjust duration as needed)
-                    setTimeout(() => {
-                      setIsVideoActive(false);
-                      pauseTimeoutRef.current = setTimeout(() => {
-                        setIsVideoActive(true);
-                      }, 30000);
-                    }, 60000); // Assumes ~60s video, adjust as needed
-                  }}
-                />
-              );
-            }
-          }
-
-          if (heroVideoType === 'vimeo' && heroVideoUrl && isVideoActive) {
-            const videoId = getVimeoId(heroVideoUrl);
-            if (videoId) {
-              return (
-                <iframe
-                  src={`https://player.vimeo.com/video/${videoId}?autoplay=1&muted=1&loop=0&background=1`}
-                  className="absolute inset-0 w-full h-full object-cover scale-150"
-                  allow="autoplay; fullscreen"
-                  allowFullScreen
-                  title="Hero Video"
-                />
-              );
-            }
-          }
-
-          if (heroVideoType === 'mp4_url' && heroVideoUrl && isVideoActive) {
-            return (
-              <video
-                ref={videoRef}
-                autoPlay
-                muted={isMuted}
-                playsInline
-                className="absolute inset-0 w-full h-full object-cover"
-                poster={heroPosterImageUrl}
-                onEnded={handleVideoEnded}
-              >
-                <source src={heroVideoUrl} type="video/mp4" />
-              </video>
-            );
-          }
+    if (heroVideoType === 'youtube' && heroVideoUrl) {
+      const videoId = getYouTubeId(heroVideoUrl);
+      if (videoId) {
+        return (
+          <iframe
+            src={`https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&loop=1&playlist=${videoId}&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1`}
+            className="absolute inset-0 w-full h-full object-cover scale-150"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+            title="Hero Video"
+          />
+        );
+      }
+    }
+    
+    if (heroVideoType === 'vimeo' && heroVideoUrl) {
+      const videoId = getVimeoId(heroVideoUrl);
+      if (videoId) {
+        return (
+          <iframe
+            src={`https://player.vimeo.com/video/${videoId}?autoplay=1&muted=1&loop=1&background=1`}
+            className="absolute inset-0 w-full h-full object-cover scale-150"
+            allow="autoplay; fullscreen"
+            allowFullScreen
+            title="Hero Video"
+          />
+        );
+      }
+    }
+    
+    if (heroVideoType === 'mp4_url' && heroVideoUrl) {
+      return (
+        <video
+          ref={videoRef}
+          autoPlay
+          loop
+          muted={isMuted}
+          playsInline
+          className="absolute inset-0 w-full h-full object-cover"
+          poster={heroPosterImageUrl}
+        >
+          <source src={heroVideoUrl} type="video/mp4" />
+        </video>
+      );
+    }
 
     // Fallback gradient background
     return (
@@ -126,26 +93,14 @@ export default function HeroSection({ settings }) {
 
   return (
     <section id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Background Image */}
+      {/* Video Background */}
       <div className="absolute inset-0">
-        <img 
-          src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/695f1f19128f966dc5681717/16766d9b8_acce0e4e-9f4e-425f-bd03-c01ed55916f1.png"
-          alt="Background"
-          className="w-full h-full object-cover"
-        />
+        {renderVideo()}
         {/* Overlays */}
-        <div className="absolute inset-0 bg-black/60" />
-        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent" />
+        <div className="absolute inset-0 bg-black/50" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-transparent to-black/60" />
       </div>
-      
-      {/* Video Background (if configured) */}
-      {heroVideoUrl && (
-        <div className="absolute inset-0">
-          {renderVideo()}
-          {/* Overlays */}
-          <div className="absolute inset-0 bg-black/40" />
-        </div>
-      )}
 
       {/* Content */}
       <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8 text-center">

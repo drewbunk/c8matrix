@@ -11,9 +11,8 @@ import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 import { 
   Settings, FileText, Briefcase, Layers, ShoppingBag, MessageSquare, 
-  Plus, Trash2, Save, ArrowLeft, Eye, GripVertical, Lock, Video, Image, Upload
+  Plus, Trash2, Save, ArrowLeft, Eye, GripVertical, Lock, Video, Image
 } from 'lucide-react';
-import { toast } from 'sonner';
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 
@@ -322,7 +321,6 @@ function CRUDList({ entityName, schema, renderItem, emptyMessage }) {
 
   const [editingItem, setEditingItem] = useState(null);
   const [formData, setFormData] = useState({});
-  const [isUploading, setIsUploading] = useState(false);
 
   const createMutation = useMutation({
     mutationFn: (data) => base44.entities[entityName].create(data),
@@ -379,96 +377,7 @@ function CRUDList({ entityName, schema, renderItem, emptyMessage }) {
             {schema.map(field => (
               <div key={field.key} className="mb-4">
                 <Label className="text-white/60">{field.label}</Label>
-                {field.type === 'image-upload' ? (
-                  <div className="space-y-2">
-                    <label 
-                      className="block"
-                      onDragOver={(e) => {
-                        e.preventDefault();
-                        e.currentTarget.classList.add('border-white');
-                      }}
-                      onDragLeave={(e) => {
-                        e.currentTarget.classList.remove('border-white');
-                      }}
-                      onDrop={async (e) => {
-                        e.preventDefault();
-                        e.currentTarget.classList.remove('border-white');
-                        const file = e.dataTransfer.files?.[0];
-                        if (file && file.type.startsWith('image/')) {
-                          try {
-                            setIsUploading(true);
-                            const { file_url } = await base44.integrations.Core.UploadFile({ file });
-                            setFormData({ ...formData, [field.key]: file_url });
-                            toast.success('Image uploaded successfully');
-                          } catch (error) {
-                            toast.error('Failed to upload image');
-                          } finally {
-                            setIsUploading(false);
-                          }
-                        }
-                      }}
-                    >
-                      <div className="flex flex-col items-center justify-center gap-3 px-6 py-8 bg-zinc-800 hover:bg-zinc-750 border-2 border-dashed border-zinc-700 rounded-lg cursor-pointer transition-all">
-                        <Upload className="w-8 h-8 text-white/40" />
-                        <div className="text-center">
-                          <p className="text-white/60 text-sm font-medium">
-                            {isUploading ? 'Uploading...' : 'Click to upload or drag and drop'}
-                          </p>
-                          <p className="text-white/40 text-xs mt-1">
-                            PNG, JPG, GIF up to 10MB
-                          </p>
-                        </div>
-                      </div>
-                      <input
-                        type="file"
-                        accept="image/*"
-                        className="hidden"
-                        disabled={isUploading}
-                        onChange={async (e) => {
-                          const file = e.target.files?.[0];
-                          if (file) {
-                            try {
-                              setIsUploading(true);
-                              const { file_url } = await base44.integrations.Core.UploadFile({ file });
-                              setFormData({ ...formData, [field.key]: file_url });
-                              toast.success('Image uploaded successfully');
-                            } catch (error) {
-                              toast.error('Failed to upload image');
-                            } finally {
-                              setIsUploading(false);
-                            }
-                          }
-                        }}
-                      />
-                    </label>
-                    {formData[field.key] && (
-                      <div className="relative mt-2 group">
-                        <img 
-                          src={formData[field.key]} 
-                          alt="Preview" 
-                          className="w-full max-w-md h-48 object-cover rounded-lg border border-white/20"
-                        />
-                        <Button
-                          type="button"
-                          variant="destructive"
-                          size="sm"
-                          className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity"
-                          onClick={() => setFormData({ ...formData, [field.key]: '' })}
-                        >
-                          <Trash2 className="w-4 h-4" />
-                        </Button>
-                      </div>
-                    )}
-                    <div className="relative">
-                      <Input
-                        value={formData[field.key] || ''}
-                        onChange={(e) => setFormData({ ...formData, [field.key]: e.target.value })}
-                        className="bg-zinc-800 border-zinc-700 text-white"
-                        placeholder="Or paste image URL"
-                      />
-                    </div>
-                  </div>
-                ) : field.type === 'textarea' ? (
+                {field.type === 'textarea' ? (
                   <Textarea
                     value={formData[field.key] || ''}
                     onChange={(e) => setFormData({ ...formData, [field.key]: e.target.value })}
@@ -612,27 +521,25 @@ export default function Admin() {
     { key: 'type', label: 'Type', type: 'select', options: ['App', 'Service', 'Content', 'Partnership'] },
     { key: 'shortDescription', label: 'Short Description', type: 'text' },
     { key: 'longDescription', label: 'Long Description', type: 'textarea' },
-    { key: 'thumbnailImageUrl', label: 'Thumbnail Image', type: 'image-upload' },
-    { key: 'linkUrl', label: 'Project Link URL', type: 'text', placeholder: 'https://example.com' },
+    { key: 'thumbnailImageUrl', label: 'Thumbnail Image URL', type: 'text' },
+    { key: 'linkUrl', label: 'Link URL', type: 'text' },
     { key: 'tags', label: 'Tags (one per line)', type: 'array' },
     { key: 'isFeatured', label: 'Featured', type: 'switch' },
-    { key: 'sortOrder', label: 'Sort Order', type: 'number' },
-  ];
-
-
-
-  const aboutPhotoSchema = [
-    { key: 'imageUrl', label: 'Cinematic Photo', type: 'image-upload' },
     { key: 'sortOrder', label: 'Sort Order', type: 'number' },
   ];
 
   const productSchema = [
     { key: 'title', label: 'Product Title', type: 'text' },
     { key: 'priceText', label: 'Price Text', type: 'text', placeholder: 'e.g., $29.99' },
-    { key: 'imageUrl', label: 'Product Image', type: 'image-upload' },
-    { key: 'productUrl', label: 'Product URL', type: 'text', placeholder: 'https://store.example.com/product' },
+    { key: 'imageUrl', label: 'Image URL', type: 'text' },
+    { key: 'productUrl', label: 'Product URL', type: 'text' },
     { key: 'badge', label: 'Badge', type: 'text', placeholder: 'e.g., Best Seller' },
     { key: 'isFeatured', label: 'Featured', type: 'switch' },
+    { key: 'sortOrder', label: 'Sort Order', type: 'number' },
+  ];
+
+  const aboutPhotoSchema = [
+    { key: 'imageUrl', label: 'Image URL', type: 'text' },
     { key: 'sortOrder', label: 'Sort Order', type: 'number' },
   ];
 
