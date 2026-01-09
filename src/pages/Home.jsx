@@ -9,6 +9,7 @@ import VideoReelSection from '@/components/home/VideoReelSection';
 import FeaturedSection from '@/components/home/FeaturedSection';
 import ProjectsSection from '@/components/home/ProjectsSection';
 import ShopSection from '@/components/home/ShopSection';
+import PortfolioSection from '@/components/home/PortfolioSection';
 import ContactSection from '@/components/home/ContactSection';
 import Footer from '@/components/home/Footer';
 
@@ -34,6 +35,11 @@ export default function Home() {
     queryFn: () => base44.entities.Product.list(),
   });
 
+  const { data: portfolioItems } = useQuery({
+    queryKey: ['portfolio'],
+    queryFn: () => base44.entities.Portfolio.list(),
+  });
+
   // Get first settings record or use defaults
   const siteSettings = settings?.[0] || {};
 
@@ -52,7 +58,9 @@ export default function Home() {
       <ProjectsSection projects={projects || []} />
       
       <ShopSection products={products || []} />
-      
+
+      <PortfolioSection portfolioItems={portfolioItems || []} />
+
       <ContactSection settings={siteSettings} />
       
       <Footer brandName={siteSettings.brandName} />
