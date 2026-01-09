@@ -300,6 +300,31 @@ function SiteSettingsForm() {
         </div>
       </div>
 
+      <div className="space-y-4 pt-6 border-t border-zinc-800">
+        <h3 className="text-lg font-semibold text-white">Background Music</h3>
+        
+        <div className="flex items-center gap-3 p-4 bg-zinc-800/50 rounded-lg">
+          <Switch
+            checked={formData.backgroundMusicEnabled || false}
+            onCheckedChange={(v) => handleChange('backgroundMusicEnabled', v)}
+          />
+          <Label className="text-white/80">Enable background music on site</Label>
+        </div>
+
+        <div>
+          <Label className="text-white/60">Music URL (MP3)</Label>
+          <Input
+            value={formData.backgroundMusicUrl || ''}
+            onChange={(e) => handleChange('backgroundMusicUrl', e.target.value)}
+            placeholder="https://example.com/music.mp3"
+            className="bg-zinc-800 border-zinc-700 text-white mt-1"
+          />
+          <p className="text-xs text-white/40 mt-1">
+            Upload your music file and paste the URL here
+          </p>
+        </div>
+      </div>
+
       <Button 
         onClick={() => mutation.mutate(formData)}
         disabled={mutation.isPending}
