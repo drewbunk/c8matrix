@@ -11,7 +11,7 @@ import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 import { 
   Settings, FileText, Briefcase, Layers, ShoppingBag, MessageSquare, 
-  Plus, Trash2, Save, ArrowLeft, Eye, GripVertical, Lock, Video, Image
+  Plus, Trash2, Save, ArrowLeft, Eye, GripVertical, Lock, Video, Image, FolderOpen
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
@@ -543,6 +543,16 @@ export default function Admin() {
     { key: 'sortOrder', label: 'Sort Order', type: 'number' },
   ];
 
+  const portfolioSchema = [
+    { key: 'title', label: 'Title', type: 'text' },
+    { key: 'description', label: 'Description', type: 'textarea' },
+    { key: 'fileUrl', label: 'File URL', type: 'text' },
+    { key: 'fileType', label: 'File Type', type: 'select', options: ['pdf', 'image', 'video', 'document'] },
+    { key: 'thumbnailUrl', label: 'Thumbnail URL (optional)', type: 'text' },
+    { key: 'category', label: 'Category', type: 'text', placeholder: 'e.g., Presentations, Case Studies' },
+    { key: 'sortOrder', label: 'Sort Order', type: 'number' },
+  ];
+
   return (
     <div className="min-h-screen bg-zinc-950">
       {/* Header */}
@@ -599,6 +609,10 @@ export default function Admin() {
             <TabsTrigger value="aboutphotos" className="data-[state=active]:bg-white data-[state=active]:text-black">
               <Image className="w-4 h-4 mr-2" />
               About Photos
+            </TabsTrigger>
+            <TabsTrigger value="portfolio" className="data-[state=active]:bg-white data-[state=active]:text-black">
+              <FolderOpen className="w-4 h-4 mr-2" />
+              Portfolio
             </TabsTrigger>
             <TabsTrigger value="messages" className="data-[state=active]:bg-white data-[state=active]:text-black">
               <MessageSquare className="w-4 h-4 mr-2" />
@@ -717,6 +731,32 @@ export default function Admin() {
                     </div>
                   )}
                   emptyMessage="No photos yet. Add cinematic photos for the About page!"
+                />
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="portfolio">
+            <Card className="bg-zinc-900 border-zinc-800">
+              <CardHeader>
+                <CardTitle className="text-white">Portfolio Files</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <CRUDList
+                  entityName="Portfolio"
+                  schema={portfolioSchema}
+                  renderItem={(item) => (
+                    <div className="flex items-center gap-4">
+                      {item.thumbnailUrl && (
+                        <img src={item.thumbnailUrl} alt="Preview" className="w-24 h-16 object-cover rounded" />
+                      )}
+                      <div>
+                        <p className="text-white font-medium">{item.title}</p>
+                        <p className="text-white/40 text-sm">{item.fileType} • {item.category || 'Uncategorized'}</p>
+                      </div>
+                    </div>
+                  )}
+                  emptyMessage="No portfolio files yet. Add documents, images, or videos!"
                 />
               </CardContent>
             </Card>
