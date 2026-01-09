@@ -2,6 +2,8 @@ import React, { useState, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { Play, ChevronDown, Volume2, VolumeX } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Link } from 'react-router-dom';
+import { createPageUrl } from '@/utils';
 
 function getYouTubeId(url) {
   if (!url) return null;
@@ -131,6 +133,14 @@ export default function HeroSection({ settings }) {
             >
               Projects
             </Button>
+            <Link to={createPageUrl('Portfolio')}>
+              <Button
+                variant="outline"
+                className="border-white/30 text-white hover:bg-white/10 px-8 py-6 text-base font-medium tracking-wide rounded-full transition-all duration-300"
+              >
+                Portfolio
+              </Button>
+            </Link>
             <Button
               onClick={() => scrollToSection(secondaryCTALink)}
               variant="outline"
