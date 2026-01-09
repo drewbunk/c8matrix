@@ -11,7 +11,7 @@ import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 import { 
   Settings, FileText, Briefcase, Layers, ShoppingBag, MessageSquare, 
-  Plus, Trash2, Save, ArrowLeft, Eye, GripVertical, Lock, Video, Image, FolderOpen
+  Plus, Trash2, Save, ArrowLeft, Eye, GripVertical, Lock, Video, Image, FolderOpen, Users
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
@@ -643,6 +643,10 @@ export default function Admin() {
               <MessageSquare className="w-4 h-4 mr-2" />
               Messages
             </TabsTrigger>
+            <TabsTrigger value="investors" className="data-[state=active]:bg-white data-[state=active]:text-black">
+              <Users className="w-4 h-4 mr-2" />
+              Investor Inquiries
+            </TabsTrigger>
           </TabsList>
 
           <TabsContent value="settings">
@@ -790,6 +794,10 @@ export default function Admin() {
           <TabsContent value="messages">
             <MessagesPanel />
           </TabsContent>
+
+          <TabsContent value="investors">
+            <InvestorInquiriesPanel />
+          </TabsContent>
         </Tabs>
       </main>
     </div>
@@ -847,6 +855,75 @@ function MessagesPanel() {
         ) : (
           <div className="text-center py-12 text-white/40">
             No messages yet.
+          </div>
+        )}
+      </CardContent>
+    </Card>
+  );
+}
+
+function InvestorInquiriesPanel() {
+  const queryClient = useQueryClient();
+  const { data: inquiries, isLoading } = useQuery({
+    queryKey: ['investorInquiries'],
+    queryFn: () => base44.entities.InvestorInquiry.list('-created_date'),
+  });
+
+  const deleteMutation = useMutation({
+    mutationFn: (id) => base44.entities.InvestorInquiry.delete(id),
+    onSuccess: () => queryClient.invalidateQueries(['investorInquiries']),
+  });
+
+  if (isLoading) return <div className="text-white/60">Loading...</div>;
+
+  return (
+    <Card className="bg-zinc-900 border-zinc-800">
+      <CardHeader>
+        <CardTitle className="text-white">Investor Inquiries</CardTitle>
+      </CardHeader>
+      <CardContent>
+        {inquiries?.length > 0 ? (
+          <div className="space-y-4">
+            {inquiries.map((inquiry) => (
+              <Card key={inquiry.id} className="bg-zinc-800 border-zinc-700">
+                <CardContent className="py-4">
+                  <div className="flex justify-between items-start mb-3">
+                    <div>
+                      <p className="text-white font-semibold text-lg">{inquiry.name}</p>
+                      <p className="text-white/40 text-sm">{inquiry.email}</p>
+                      {inquiry.company && (
+                        <p className="text-white/60 text-sm mt-1">
+                          Company: {inquiry.company}
+                        </p>
+                      )}
+                      {inquiry.investmentFocus && (
+                        <p className="text-emerald-400/80 text-sm mt-1">
+                          Focus: {inquiry.investmentFocus}
+                        </p>
+                      )}
+                    </div>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => deleteMutation.mutate(inquiry.id)}
+                      className="text-red-400 hover:text-red-300"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </Button>
+                  </div>
+                  <div className="bg-zinc-900/50 rounded-lg p-3 mt-3">
+                    <p className="text-white/80 text-sm leading-relaxed">{inquiry.message}</p>
+                  </div>
+                  <p className="text-white/30 text-xs mt-3">
+                    {new Date(inquiry.created_date).toLocaleString()}
+                  </p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        ) : (
+          <div className="text-center py-12 text-white/40">
+            No investor inquiries yet.
           </div>
         )}
       </CardContent>
