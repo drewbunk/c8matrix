@@ -13,7 +13,7 @@ export default function BackgroundMusic({ musicUrl, enabled }) {
     
     const audio = audioRef.current;
     if (audio) {
-      audio.volume = 0.3; // Set default volume to 30%
+      audio.volume = 1; // Set volume to 100%, let user control via device
     }
   }, [enabled, musicUrl]);
 
