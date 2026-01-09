@@ -3,6 +3,7 @@ import Admin from './pages/Admin';
 import Home from './pages/Home';
 import Portfolio from './pages/Portfolio';
 import Resume from './pages/Resume';
+import ProjectDetails from './pages/ProjectDetails';
 import __Layout from './Layout.jsx';
 
 
@@ -12,6 +13,7 @@ export const PAGES = {
     "Home": Home,
     "Portfolio": Portfolio,
     "Resume": Resume,
+    "ProjectDetails": ProjectDetails,
 }
 
 export const pagesConfig = {

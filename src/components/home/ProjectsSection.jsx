@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowUpRight, Layers } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Link } from 'react-router-dom';
+import { createPageUrl } from '@/utils';
 
 const typeColors = {
   App: 'bg-blue-500/20 text-blue-400 border-blue-500/30',
@@ -116,17 +118,13 @@ export default function ProjectsSection({ projects = [] }) {
                     )}
 
                     {/* Link */}
-                    {project.linkUrl && (
-                      <a
-                        href={project.linkUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-2 text-white/70 hover:text-white text-sm font-medium transition-colors pt-2"
-                      >
-                        View Project
-                        <ArrowUpRight size={16} />
-                      </a>
-                    )}
+                    <Link
+                      to={`${createPageUrl('ProjectDetails')}?id=${project.id}`}
+                      className="inline-flex items-center gap-2 text-white/70 hover:text-white text-sm font-medium transition-colors pt-2"
+                    >
+                      View Details
+                      <ArrowUpRight size={16} />
+                    </Link>
                   </div>
                 </div>
               </motion.div>
