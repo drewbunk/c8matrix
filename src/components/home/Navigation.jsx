@@ -12,6 +12,7 @@ const navLinks = [
   { label: 'Projects', href: '#projects', type: 'anchor' },
   { label: 'Portfolio', href: '#portfolio', type: 'anchor' },
   { label: 'Shop', href: '#shop', type: 'anchor' },
+  { label: 'Investors', href: 'InvestorContact', type: 'page' },
   { label: 'Contact', href: '#contact', type: 'anchor' },
 ];
 
