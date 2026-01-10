@@ -14,6 +14,27 @@ export default function BackgroundMusic({ musicUrl, enabled }) {
     const audio = audioRef.current;
     if (audio) {
       audio.volume = 1; // Set volume to 100%, let user control via device
+      
+      // Try to autoplay on first user interaction
+      const startAudio = () => {
+        audio.play().then(() => {
+          setIsPlaying(true);
+        }).catch((error) => {
+          console.log('Autoplay prevented:', error);
+        });
+        // Remove listener after first interaction
+        document.removeEventListener('click', startAudio);
+        document.removeEventListener('keydown', startAudio);
+      };
+      
+      // Listen for first user interaction
+      document.addEventListener('click', startAudio);
+      document.addEventListener('keydown', startAudio);
+      
+      return () => {
+        document.removeEventListener('click', startAudio);
+        document.removeEventListener('keydown', startAudio);
+      };
     }
   }, [enabled, musicUrl]);
 
