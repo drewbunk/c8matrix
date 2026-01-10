@@ -6,13 +6,13 @@ import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 
 function getYouTubeId(url) {
-  if (!url) return null;
+  if (!url || typeof url !== 'string') return null;
   const match = url.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))([^&?\n]+)/);
   return match ? match[1] : null;
 }
 
 function getVimeoId(url) {
-  if (!url) return null;
+  if (!url || typeof url !== 'string') return null;
   const match = url.match(/vimeo\.com\/(\d+)/);
   return match ? match[1] : null;
 }
