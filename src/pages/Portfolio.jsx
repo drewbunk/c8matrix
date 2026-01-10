@@ -53,6 +53,10 @@ export default function Portfolio() {
           src={item.thumbnailUrl || item.fileUrl} 
           alt={item.title}
           className="w-full h-full object-cover"
+          onError={(e) => {
+            e.target.style.display = 'none';
+            e.target.parentElement.innerHTML = '<div class="flex items-center justify-center h-full bg-zinc-900"><svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-white/40"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg></div>';
+          }}
         />
       );
     }
@@ -65,12 +69,15 @@ export default function Portfolio() {
               src={item.thumbnailUrl} 
               alt={item.title}
               className="w-full h-full object-cover"
+              onError={(e) => {
+                e.target.style.display = 'none';
+                e.target.parentElement.querySelector('.fallback-icon').style.display = 'flex';
+              }}
             />
-          ) : (
-            <div className="flex items-center justify-center h-full">
-              <Video size={48} className="text-white/40" />
-            </div>
-          )}
+          ) : null}
+          <div className={`${item.thumbnailUrl ? 'hidden' : 'flex'} fallback-icon items-center justify-center h-full absolute inset-0`}>
+            <Video size={48} className="text-white/40" />
+          </div>
           <div className="absolute inset-0 flex items-center justify-center bg-black/30">
             <div className="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center">
               <div className="w-0 h-0 border-t-8 border-t-transparent border-l-12 border-l-white border-b-8 border-b-transparent ml-1" />
@@ -83,16 +90,21 @@ export default function Portfolio() {
     // PDF or document preview
     const Icon = getFileIcon(item.fileType);
     return (
-      <div className="flex items-center justify-center h-full bg-zinc-900">
+      <div className="flex items-center justify-center h-full bg-zinc-900 relative">
         {item.thumbnailUrl ? (
           <img 
             src={item.thumbnailUrl} 
             alt={item.title}
             className="w-full h-full object-cover"
+            onError={(e) => {
+              e.target.style.display = 'none';
+              e.target.parentElement.querySelector('.fallback-icon').style.display = 'flex';
+            }}
           />
-        ) : (
+        ) : null}
+        <div className={`${item.thumbnailUrl ? 'hidden' : 'flex'} fallback-icon items-center justify-center absolute inset-0`}>
           <Icon size={48} className="text-white/40" />
-        )}
+        </div>
       </div>
     );
   };
