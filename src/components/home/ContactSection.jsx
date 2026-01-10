@@ -43,6 +43,21 @@ export default function ContactSection({ settings }) {
     
     await base44.entities.ContactSubmission.create(formData);
     
+    // Send email notification
+    await base44.integrations.Core.SendEmail({
+      to: 'drew@TreadAndTorque.com',
+      subject: `New Contact Form Submission: ${formData.subject || 'No Subject'}`,
+      body: `
+        New contact form submission from ${formData.name}
+        
+        Email: ${formData.email}
+        Subject: ${formData.subject || 'No Subject'}
+        
+        Message:
+        ${formData.message}
+      `
+    });
+    
     setIsSubmitting(false);
     setSubmitted(true);
     setFormData({ name: '', email: '', subject: '', message: '' });

@@ -26,6 +26,23 @@ export default function InvestorContact() {
 
     try {
       await base44.entities.InvestorInquiry.create(formData);
+      
+      // Send email notification
+      await base44.integrations.Core.SendEmail({
+        to: 'drew@TreadAndTorque.com',
+        subject: 'New Investor Inquiry',
+        body: `
+          New investor inquiry from ${formData.name}
+          
+          Email: ${formData.email}
+          Company: ${formData.company || 'Not provided'}
+          Investment Focus: ${formData.investmentFocus || 'Not provided'}
+          
+          Message:
+          ${formData.message}
+        `
+      });
+      
       setIsSuccess(true);
       setFormData({ name: '', email: '', company: '', investmentFocus: '', message: '' });
       setTimeout(() => setIsSuccess(false), 5000);
