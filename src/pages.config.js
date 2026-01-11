@@ -8,6 +8,9 @@ import Resume from './pages/Resume';
 import Bookings from './pages/Bookings';
 import PayForServices from './pages/PayForServices';
 import PaymentSuccess from './pages/PaymentSuccess';
+import BlogAdmin from './pages/BlogAdmin';
+import Blog from './pages/Blog';
+import BlogPost from './pages/BlogPost';
 import __Layout from './Layout.jsx';
 
 
@@ -22,6 +25,9 @@ export const PAGES = {
     "Bookings": Bookings,
     "PayForServices": PayForServices,
     "PaymentSuccess": PaymentSuccess,
+    "BlogAdmin": BlogAdmin,
+    "Blog": Blog,
+    "BlogPost": BlogPost,
 }
 
 export const pagesConfig = {
