@@ -6,6 +6,8 @@ import Portfolio from './pages/Portfolio';
 import ProjectDetails from './pages/ProjectDetails';
 import Resume from './pages/Resume';
 import Bookings from './pages/Bookings';
+import PayForServices from './pages/PayForServices';
+import PaymentSuccess from './pages/PaymentSuccess';
 import __Layout from './Layout.jsx';
 
 
@@ -18,6 +20,8 @@ export const PAGES = {
     "ProjectDetails": ProjectDetails,
     "Resume": Resume,
     "Bookings": Bookings,
+    "PayForServices": PayForServices,
+    "PaymentSuccess": PaymentSuccess,
 }
 
 export const pagesConfig = {
