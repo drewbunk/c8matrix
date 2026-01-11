@@ -14,9 +14,9 @@ const services = [
     id: 'booking',
     name: 'Booking Service',
     description: 'Professional consultation and booking',
-    price: '$150',
-    priceId: 'price_1SoL3LEbxXzXBraIhZ2NMjft',
-    features: ['1-hour session', 'Video call included', 'Follow-up support'],
+    price: '$97',
+    priceId: 'price_1SoLs4EbxXzXBraI69wfXiWb',
+    features: ['30-minute session', 'Video call included', 'Follow-up support'],
     icon: Briefcase,
   },
   {
