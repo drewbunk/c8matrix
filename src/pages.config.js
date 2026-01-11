@@ -5,6 +5,7 @@ import InvestorContact from './pages/InvestorContact';
 import Portfolio from './pages/Portfolio';
 import ProjectDetails from './pages/ProjectDetails';
 import Resume from './pages/Resume';
+import Bookings from './pages/Bookings';
 import __Layout from './Layout.jsx';
 
 
@@ -16,6 +17,7 @@ export const PAGES = {
     "Portfolio": Portfolio,
     "ProjectDetails": ProjectDetails,
     "Resume": Resume,
+    "Bookings": Bookings,
 }
 
 export const pagesConfig = {
