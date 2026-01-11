@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Send, Mail, Instagram, Youtube, Linkedin } from 'lucide-react';
+import { Send, Mail, Instagram, Youtube, Linkedin, CreditCard } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { base44 } from '@/api/base44Client';
+import { toast } from 'sonner';
 
 // TikTok icon component
 const TikTokIcon = ({ size = 24, className }) => (
@@ -28,6 +29,8 @@ export default function ContactSection({ settings }) {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [bookingInfo, setBookingInfo] = useState({ name: '', email: '', phone: '' });
+  const [isBooking, setIsBooking] = useState(false);
 
   const {
     contactEmail,
@@ -61,6 +64,39 @@ export default function ContactSection({ settings }) {
     setIsSubmitting(false);
     setSubmitted(true);
     setFormData({ name: '', email: '', subject: '', message: '' });
+  };
+
+  const handleBookPaidCall = async (e) => {
+    e.preventDefault();
+    
+    // Check if running in iframe
+    if (window.self !== window.top) {
+      toast.error('Checkout is only available from the published app, not in preview mode');
+      return;
+    }
+
+    if (!bookingInfo.name || !bookingInfo.email) {
+      toast.error('Please provide your name and email');
+      return;
+    }
+
+    setIsBooking(true);
+
+    try {
+      const { data } = await base44.functions.invoke('createDiscoveryCheckout', {
+        customerName: bookingInfo.name,
+        customerEmail: bookingInfo.email,
+        customerPhone: bookingInfo.phone,
+      });
+
+      if (data.url) {
+        window.location.href = data.url;
+      }
+    } catch (error) {
+      console.error('Booking checkout error:', error);
+      toast.error('Failed to start checkout');
+      setIsBooking(false);
+    }
   };
 
   const socialLinks = [
@@ -104,6 +140,49 @@ export default function ContactSection({ settings }) {
                 Whether you're looking for creative direction, AI content production, 
                 or automotive storytelling – I'd love to hear from you.
               </p>
+            </div>
+
+            {/* Book Paid Discovery Call */}
+            <div className="bg-gradient-to-br from-red-600/20 to-red-800/20 border border-red-500/30 rounded-2xl p-6">
+              <div className="flex items-start gap-3 mb-4">
+                <div className="p-2 bg-red-500/20 rounded-lg">
+                  <CreditCard size={24} className="text-red-400" />
+                </div>
+                <div>
+                  <h4 className="text-lg font-semibold text-white mb-1">Creator Nest Discovery</h4>
+                  <p className="text-white/60 text-sm">30min strategy session - $97</p>
+                </div>
+              </div>
+              <form onSubmit={handleBookPaidCall} className="space-y-3">
+                <Input
+                  placeholder="Your Name *"
+                  value={bookingInfo.name}
+                  onChange={(e) => setBookingInfo({ ...bookingInfo, name: e.target.value })}
+                  required
+                  className="bg-black/50 border-white/20 text-white h-11 rounded-xl"
+                />
+                <Input
+                  type="email"
+                  placeholder="Email Address *"
+                  value={bookingInfo.email}
+                  onChange={(e) => setBookingInfo({ ...bookingInfo, email: e.target.value })}
+                  required
+                  className="bg-black/50 border-white/20 text-white h-11 rounded-xl"
+                />
+                <Input
+                  placeholder="Phone (optional)"
+                  value={bookingInfo.phone}
+                  onChange={(e) => setBookingInfo({ ...bookingInfo, phone: e.target.value })}
+                  className="bg-black/50 border-white/20 text-white h-11 rounded-xl"
+                />
+                <Button
+                  type="submit"
+                  disabled={isBooking}
+                  className="w-full bg-red-600 hover:bg-red-700 text-white h-11 rounded-xl font-semibold"
+                >
+                  {isBooking ? 'Processing...' : 'Pay $97 → Book 30min Call'}
+                </Button>
+              </form>
             </div>
 
             {contactEmail && (

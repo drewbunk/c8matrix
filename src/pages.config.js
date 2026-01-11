@@ -12,6 +12,7 @@ import BlogAdmin from './pages/BlogAdmin';
 import Blog from './pages/Blog';
 import BlogPost from './pages/BlogPost';
 import BookCall from './pages/BookCall';
+import ClientsAdmin from './pages/ClientsAdmin';
 import __Layout from './Layout.jsx';
 
 
@@ -30,6 +31,7 @@ export const PAGES = {
     "Blog": Blog,
     "BlogPost": BlogPost,
     "BookCall": BookCall,
+    "ClientsAdmin": ClientsAdmin,
 }
 
 export const pagesConfig = {
