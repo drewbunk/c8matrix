@@ -11,10 +11,11 @@ import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 import { 
   Settings, FileText, Briefcase, Layers, ShoppingBag, MessageSquare, 
-  Plus, Trash2, Save, ArrowLeft, Eye, GripVertical, Lock, Video, Image, FolderOpen, Users
+  Plus, Trash2, Save, ArrowLeft, Eye, GripVertical, Lock, Video, Image, FolderOpen, Users, Upload, Copy, Music
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
+import { toast } from 'sonner';
 
 // Simple password protection (you can make this more secure)
 const ADMIN_PASSWORD = 'c8matrix2024';
@@ -804,29 +805,7 @@ export default function Admin() {
           </TabsContent>
 
           <TabsContent value="media">
-            <Card className="bg-zinc-900 border-zinc-800">
-              <CardHeader>
-                <CardTitle className="text-white flex items-center justify-between">
-                  Media Manager
-                  <Link to={createPageUrl('MediaManager')}>
-                    <Button className="bg-white text-black hover:bg-white/90">
-                      Open Full Manager
-                    </Button>
-                  </Link>
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-white/60 mb-4">
-                  Upload and manage images and videos for use throughout your site. Click "Open Full Manager" for drag-and-drop upload.
-                </p>
-                <Link to={createPageUrl('MediaManager')}>
-                  <Button variant="outline" className="border-white/20 text-white hover:bg-white/5">
-                    <Image className="w-4 h-4 mr-2" />
-                    Go to Media Manager
-                  </Button>
-                </Link>
-              </CardContent>
-            </Card>
+            <MediaManagerPanel />
           </TabsContent>
         </Tabs>
       </main>
@@ -954,6 +933,232 @@ function InvestorInquiriesPanel() {
         ) : (
           <div className="text-center py-12 text-white/40">
             No investor inquiries yet.
+          </div>
+        )}
+      </CardContent>
+    </Card>
+  );
+}
+
+function MediaManagerPanel() {
+  const queryClient = useQueryClient();
+  const [isDragging, setIsDragging] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
+  const [selectedFile, setSelectedFile] = useState(null);
+
+  const { data: mediaFiles = [] } = useQuery({
+    queryKey: ['mediaFiles'],
+    queryFn: () => base44.entities.MediaFile.list('-created_date'),
+  });
+
+  const deleteMutation = useMutation({
+    mutationFn: (id) => base44.entities.MediaFile.delete(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries(['mediaFiles']);
+      toast.success('File deleted');
+      setSelectedFile(null);
+    },
+  });
+
+  const handleDragOver = (e) => {
+    e.preventDefault();
+    setIsDragging(true);
+  };
+
+  const handleDragLeave = (e) => {
+    e.preventDefault();
+    setIsDragging(false);
+  };
+
+  const handleDrop = async (e) => {
+    e.preventDefault();
+    setIsDragging(false);
+    const files = Array.from(e.dataTransfer.files);
+    await uploadFiles(files);
+  };
+
+  const handleFileSelect = async (e) => {
+    const files = Array.from(e.target.files);
+    await uploadFiles(files);
+  };
+
+  const uploadFiles = async (files) => {
+    setIsUploading(true);
+
+    for (const file of files) {
+      try {
+        const isImage = file.type.startsWith('image/');
+        const isVideo = file.type.startsWith('video/');
+        const isAudio = file.type.startsWith('audio/');
+
+        if (!isImage && !isVideo && !isAudio) {
+          toast.error(`${file.name}: Only images, videos, and audio files supported`);
+          continue;
+        }
+
+        const { file_url } = await base44.integrations.Core.UploadFile({ file });
+
+        let fileType = 'image';
+        if (isVideo) fileType = 'video';
+        if (isAudio) fileType = 'audio';
+
+        await base44.entities.MediaFile.create({
+          fileName: file.name,
+          fileUrl: file_url,
+          fileType,
+          mimeType: file.type,
+          fileSize: file.size,
+          tags: [],
+          usedIn: [],
+        });
+
+        toast.success(`${file.name} uploaded`);
+      } catch (error) {
+        console.error('Upload error:', error);
+        toast.error(`Failed to upload ${file.name}`);
+      }
+    }
+
+    queryClient.invalidateQueries(['mediaFiles']);
+    setIsUploading(false);
+  };
+
+  const copyToClipboard = (url) => {
+    navigator.clipboard.writeText(url);
+    toast.success('URL copied to clipboard');
+  };
+
+  const formatFileSize = (bytes) => {
+    if (bytes < 1024) return bytes + ' B';
+    if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+    return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
+  };
+
+  const getFileIcon = (fileType) => {
+    if (fileType === 'image') return Image;
+    if (fileType === 'video') return Video;
+    if (fileType === 'audio') return Music;
+    return FolderOpen;
+  };
+
+  return (
+    <Card className="bg-zinc-900 border-zinc-800">
+      <CardHeader>
+        <CardTitle className="text-white">Media Manager</CardTitle>
+      </CardHeader>
+      <CardContent className="space-y-6">
+        {/* Upload Area */}
+        <div
+          onDragOver={handleDragOver}
+          onDragLeave={handleDragLeave}
+          onDrop={handleDrop}
+          className={`border-2 border-dashed rounded-xl p-8 transition-all ${
+            isDragging
+              ? 'border-white bg-white/5'
+              : 'border-zinc-700 hover:border-zinc-600'
+          }`}
+        >
+          <div className="text-center">
+            <Upload size={40} className="mx-auto mb-3 text-white/40" />
+            <h4 className="text-lg font-semibold text-white mb-2">
+              {isUploading ? 'Uploading...' : 'Drag & Drop Files Here'}
+            </h4>
+            <p className="text-white/60 text-sm mb-4">Images, Videos, or Audio (MP3)</p>
+            <input
+              type="file"
+              multiple
+              accept="image/*,video/*,audio/*"
+              onChange={handleFileSelect}
+              className="hidden"
+              id="media-upload"
+              disabled={isUploading}
+            />
+            <label htmlFor="media-upload">
+              <Button
+                as="span"
+                disabled={isUploading}
+                className="bg-white text-black hover:bg-white/90 rounded-lg cursor-pointer"
+              >
+                Select Files
+              </Button>
+            </label>
+          </div>
+        </div>
+
+        {/* Stats */}
+        <div className="grid grid-cols-3 gap-3">
+          <div className="bg-zinc-800/50 rounded-lg p-3">
+            <p className="text-white/40 text-xs">Total Files</p>
+            <p className="text-xl font-bold text-white">{mediaFiles.length}</p>
+          </div>
+          <div className="bg-zinc-800/50 rounded-lg p-3">
+            <p className="text-white/40 text-xs">Images</p>
+            <p className="text-xl font-bold text-white">
+              {mediaFiles.filter((f) => f.fileType === 'image').length}
+            </p>
+          </div>
+          <div className="bg-zinc-800/50 rounded-lg p-3">
+            <p className="text-white/40 text-xs">Videos/Audio</p>
+            <p className="text-xl font-bold text-white">
+              {mediaFiles.filter((f) => f.fileType === 'video' || f.fileType === 'audio').length}
+            </p>
+          </div>
+        </div>
+
+        {/* Files List */}
+        <div className="space-y-2 max-h-96 overflow-y-auto">
+          {mediaFiles.map((file) => {
+            const FileIcon = getFileIcon(file.fileType);
+            return (
+              <Card key={file.id} className="bg-zinc-800 border-zinc-700">
+                <CardContent className="py-3">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3 flex-1 min-w-0">
+                      <FileIcon size={20} className="text-white/60 shrink-0" />
+                      <div className="min-w-0 flex-1">
+                        <p className="text-white text-sm font-medium truncate">{file.fileName}</p>
+                        <p className="text-white/40 text-xs">
+                          {file.fileType} • {formatFileSize(file.fileSize)}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="flex gap-2">
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        onClick={() => copyToClipboard(file.fileUrl)}
+                        className="text-white/60 hover:text-white"
+                      >
+                        <Copy size={16} />
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        onClick={() => {
+                          if (confirm('Delete this file?')) {
+                            deleteMutation.mutate(file.id);
+                          }
+                        }}
+                        className="text-red-400 hover:text-red-300"
+                      >
+                        <Trash2 size={16} />
+                      </Button>
+                    </div>
+                  </div>
+                  {selectedFile?.id === file.id && (
+                    <div className="mt-3 pt-3 border-t border-zinc-700">
+                      <code className="text-xs text-white/60 break-all">{file.fileUrl}</code>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            );
+          })}
+        </div>
+
+        {mediaFiles.length === 0 && (
+          <div className="text-center py-8 text-white/40">
+            No files uploaded yet. Drag and drop files above!
           </div>
         )}
       </CardContent>
