@@ -314,14 +314,52 @@ function SiteSettingsForm() {
 
         <div>
           <Label className="text-white/60">Music URL (MP3)</Label>
-          <Input
-            value={formData.backgroundMusicUrl || ''}
-            onChange={(e) => handleChange('backgroundMusicUrl', e.target.value)}
-            placeholder="https://example.com/music.mp3"
-            className="bg-zinc-800 border-zinc-700 text-white mt-1"
-          />
+          <div className="flex gap-2 mt-1">
+            <Input
+              value={formData.backgroundMusicUrl || ''}
+              onChange={(e) => handleChange('backgroundMusicUrl', e.target.value)}
+              placeholder="https://example.com/music.mp3"
+              className="bg-zinc-800 border-zinc-700 text-white flex-1"
+            />
+            <input
+              type="file"
+              accept="audio/*"
+              className="hidden"
+              id="music-file-upload"
+              onChange={async (e) => {
+                const file = e.target.files[0];
+                if (!file) return;
+                
+                if (!file.type.startsWith('audio/')) {
+                  toast.error('Please select an audio file');
+                  return;
+                }
+                
+                try {
+                  toast.info('Uploading music...');
+                  const { file_url } = await base44.integrations.Core.UploadFile({ file });
+                  handleChange('backgroundMusicUrl', file_url);
+                  toast.success('Music uploaded! URL updated.');
+                } catch (error) {
+                  console.error('Upload error:', error);
+                  toast.error('Failed to upload music');
+                }
+              }}
+            />
+            <label htmlFor="music-file-upload">
+              <Button
+                type="button"
+                as="span"
+                variant="outline"
+                className="border-white/20 text-white hover:bg-white/5 cursor-pointer"
+              >
+                <Upload size={16} className="mr-2" />
+                Upload MP3
+              </Button>
+            </label>
+          </div>
           <p className="text-xs text-white/40 mt-1">
-            Upload your music file and paste the URL here
+            Click "Upload MP3" or paste a direct MP3 URL
           </p>
         </div>
       </div>
