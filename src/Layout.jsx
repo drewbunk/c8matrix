@@ -1,6 +1,7 @@
 import React from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { base44 } from '@/api/base44Client';
+import BackgroundMusicPlayer from '@/components/BackgroundMusicPlayer';
 
 export default function Layout({ children, currentPageName }) {
   const { data: settings } = useQuery({
@@ -52,6 +53,10 @@ export default function Layout({ children, currentPageName }) {
         }
       `}</style>
       {children}
+      <BackgroundMusicPlayer 
+        musicUrl={siteSettings.backgroundMusicUrl} 
+        enabled={siteSettings.backgroundMusicEnabled} 
+      />
     </>
   );
 }
