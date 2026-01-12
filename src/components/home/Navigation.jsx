@@ -15,6 +15,7 @@ const navLinks = [
   { label: 'Hire Me', href: 'PayForServices', type: 'page' },
   { label: 'Investors', href: 'InvestorContact', type: 'page' },
   { label: 'Contact', href: '#contact', type: 'anchor' },
+  { label: 'Admin', href: 'Admin', type: 'page' },
 ];
 
 export default function Navigation({ brandName = 'C8Matrix' }) {
