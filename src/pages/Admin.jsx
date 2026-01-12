@@ -647,6 +647,10 @@ export default function Admin() {
               <Users className="w-4 h-4 mr-2" />
               Investor Inquiries
             </TabsTrigger>
+            <TabsTrigger value="media" className="data-[state=active]:bg-white data-[state=active]:text-black">
+              <Image className="w-4 h-4 mr-2" />
+              Media Manager
+            </TabsTrigger>
           </TabsList>
 
           <TabsContent value="settings">
@@ -797,6 +801,32 @@ export default function Admin() {
 
           <TabsContent value="investors">
             <InvestorInquiriesPanel />
+          </TabsContent>
+
+          <TabsContent value="media">
+            <Card className="bg-zinc-900 border-zinc-800">
+              <CardHeader>
+                <CardTitle className="text-white flex items-center justify-between">
+                  Media Manager
+                  <Link to={createPageUrl('MediaManager')}>
+                    <Button className="bg-white text-black hover:bg-white/90">
+                      Open Full Manager
+                    </Button>
+                  </Link>
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-white/60 mb-4">
+                  Upload and manage images and videos for use throughout your site. Click "Open Full Manager" for drag-and-drop upload.
+                </p>
+                <Link to={createPageUrl('MediaManager')}>
+                  <Button variant="outline" className="border-white/20 text-white hover:bg-white/5">
+                    <Image className="w-4 h-4 mr-2" />
+                    Go to Media Manager
+                  </Button>
+                </Link>
+              </CardContent>
+            </Card>
           </TabsContent>
         </Tabs>
       </main>
