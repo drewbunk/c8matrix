@@ -17,16 +17,13 @@ import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import { toast } from 'sonner';
 
-// Simple password protection (you can make this more secure)
-const ADMIN_PASSWORD = 'c8matrix2024';
-
-function AdminLogin({ onLogin }) {
+function AdminLogin({ onLogin, storedPassword }) {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (password === ADMIN_PASSWORD) {
+    if (password === storedPassword) {
       localStorage.setItem('adminAuth', 'true');
       onLogin();
     } else {
@@ -303,7 +300,7 @@ function SiteSettingsForm() {
 
       <div className="space-y-4 pt-6 border-t border-zinc-800">
         <h3 className="text-lg font-semibold text-white">Background Music</h3>
-        
+
         <div className="flex items-center gap-3 p-4 bg-zinc-800/50 rounded-lg">
           <Switch
             checked={formData.backgroundMusicEnabled || false}
@@ -329,12 +326,12 @@ function SiteSettingsForm() {
               onChange={async (e) => {
                 const file = e.target.files[0];
                 if (!file) return;
-                
+
                 if (!file.type.startsWith('audio/')) {
                   toast.error('Please select an audio file');
                   return;
                 }
-                
+
                 try {
                   toast.info('Uploading music...');
                   const { file_url } = await base44.integrations.Core.UploadFile({ file });
@@ -360,6 +357,23 @@ function SiteSettingsForm() {
           </div>
           <p className="text-xs text-white/40 mt-1">
             Click "Upload MP3" or paste a direct MP3 URL
+          </p>
+        </div>
+      </div>
+
+      <div className="space-y-4 pt-6 border-t border-zinc-800">
+        <h3 className="text-lg font-semibold text-white">Admin Password</h3>
+        <div>
+          <Label className="text-white/60">Change Admin Password</Label>
+          <Input
+            type="password"
+            value={formData.adminPassword || ''}
+            onChange={(e) => handleChange('adminPassword', e.target.value)}
+            placeholder="Enter new password"
+            className="bg-zinc-800 border-zinc-700 text-white mt-1"
+          />
+          <p className="text-xs text-white/40 mt-1">
+            Update the password for accessing this admin dashboard
           </p>
         </div>
       </div>
@@ -550,13 +564,20 @@ function CRUDList({ entityName, schema, renderItem, emptyMessage }) {
 export default function Admin() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
+  const { data: settings } = useQuery({
+    queryKey: ['siteSettings'],
+    queryFn: () => base44.entities.SiteSettings.list(),
+  });
+
+  const storedPassword = settings?.[0]?.adminPassword || 'c8matrix2024';
+
   useEffect(() => {
     const auth = localStorage.getItem('adminAuth');
     if (auth === 'true') setIsAuthenticated(true);
   }, []);
 
   if (!isAuthenticated) {
-    return <AdminLogin onLogin={() => setIsAuthenticated(true)} />;
+    return <AdminLogin onLogin={() => setIsAuthenticated(true)} storedPassword={storedPassword} />;
   }
 
   const featuredSchema = [
