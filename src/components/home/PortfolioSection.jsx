@@ -13,10 +13,31 @@ const getFileIcon = (fileType) => {
     case 'image':
       return Image;
     case 'video':
+    case 'youtube':
       return Video;
     default:
       return File;
   }
+};
+
+const extractYouTubeId = (url) => {
+  if (!url) return null;
+  if (/^[a-zA-Z0-9_-]{11}$/.test(url)) return url;
+  
+  const patterns = [
+    /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([a-zA-Z0-9_-]{11})/,
+    /youtube\.com\/watch\?.*v=([a-zA-Z0-9_-]{11})/
+  ];
+  
+  for (const pattern of patterns) {
+    const match = url.match(pattern);
+    if (match) return match[1];
+  }
+  return null;
+};
+
+const getYouTubeThumbnail = (videoId) => {
+  return `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
 };
 
 export default function PortfolioSection({ portfolioItems = [] }) {
@@ -51,6 +72,10 @@ export default function PortfolioSection({ portfolioItems = [] }) {
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
           {sortedItems.map((item, i) => {
             const Icon = getFileIcon(item.fileType);
+            const videoId = item.fileType === 'youtube' ? extractYouTubeId(item.fileUrl) : null;
+            const thumbnailUrl = item.fileType === 'youtube' && videoId 
+              ? getYouTubeThumbnail(videoId)
+              : item.thumbnailUrl;
             
             return (
               <motion.div
@@ -61,19 +86,32 @@ export default function PortfolioSection({ portfolioItems = [] }) {
                 transition={{ delay: i * 0.1 }}
               >
                 <a
-                  href={item.fileUrl}
+                  href={
+                    item.fileType === 'youtube' && videoId
+                      ? `https://www.youtube.com/watch?v=${videoId}`
+                      : item.fileUrl
+                  }
                   target="_blank"
                   rel="noopener noreferrer"
                   className="group block bg-zinc-950 border border-white/10 rounded-xl overflow-hidden hover:border-white/20 transition-all"
                 >
                   {/* Preview */}
                   <div className="relative aspect-video bg-zinc-900 flex items-center justify-center overflow-hidden">
-                    {item.thumbnailUrl ? (
-                      <img
-                        src={item.thumbnailUrl}
-                        alt={item.title}
-                        className="w-full h-full object-cover"
-                      />
+                    {thumbnailUrl ? (
+                      <>
+                        <img
+                          src={thumbnailUrl}
+                          alt={item.title}
+                          className="w-full h-full object-cover"
+                        />
+                        {item.fileType === 'youtube' && (
+                          <div className="absolute inset-0 flex items-center justify-center bg-black/20">
+                            <div className="w-12 h-12 bg-red-600/90 rounded-full flex items-center justify-center">
+                              <div className="w-0 h-0 border-t-6 border-t-transparent border-l-10 border-l-white border-b-6 border-b-transparent ml-1" />
+                            </div>
+                          </div>
+                        )}
+                      </>
                     ) : (
                       <Icon size={48} className="text-white/20" />
                     )}

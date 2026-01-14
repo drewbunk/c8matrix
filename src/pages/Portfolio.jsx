@@ -40,13 +40,73 @@ export default function Portfolio() {
       case 'image':
         return ImageIcon;
       case 'video':
+      case 'youtube':
         return Video;
       default:
         return File;
     }
   };
 
+  const extractYouTubeId = (url) => {
+    // Handle YouTube video IDs or full URLs
+    if (!url) return null;
+    
+    // If it's already just the ID (11 chars, alphanumeric)
+    if (/^[a-zA-Z0-9_-]{11}$/.test(url)) return url;
+    
+    // Extract from various YouTube URL formats
+    const patterns = [
+      /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([a-zA-Z0-9_-]{11})/,
+      /youtube\.com\/watch\?.*v=([a-zA-Z0-9_-]{11})/
+    ];
+    
+    for (const pattern of patterns) {
+      const match = url.match(pattern);
+      if (match) return match[1];
+    }
+    
+    return null;
+  };
+
+  const getYouTubeThumbnail = (videoId) => {
+    return `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
+  };
+
   const renderPreview = (item) => {
+    // Handle YouTube videos
+    if (item.fileType === 'youtube') {
+      const videoId = extractYouTubeId(item.fileUrl);
+      if (!videoId) {
+        return (
+          <div className="flex items-center justify-center h-full bg-zinc-900">
+            <Video size={48} className="text-white/40" />
+          </div>
+        );
+      }
+
+      return (
+        <div className="relative w-full h-full bg-zinc-900">
+          <img 
+            src={getYouTubeThumbnail(videoId)}
+            alt={item.title}
+            className="w-full h-full object-cover"
+            onError={(e) => {
+              e.target.style.display = 'none';
+              e.target.parentElement.querySelector('.fallback-icon').style.display = 'flex';
+            }}
+          />
+          <div className="fallback-icon hidden items-center justify-center h-full absolute inset-0">
+            <Video size={48} className="text-white/40" />
+          </div>
+          <div className="absolute inset-0 flex items-center justify-center bg-black/30">
+            <div className="w-16 h-16 bg-red-600/90 backdrop-blur-sm rounded-full flex items-center justify-center">
+              <div className="w-0 h-0 border-t-8 border-t-transparent border-l-12 border-l-white border-b-8 border-b-transparent ml-1" />
+            </div>
+          </div>
+        </div>
+      );
+    }
+
     if (item.fileType === 'image') {
       return (
         <img 
@@ -193,7 +253,11 @@ export default function Portfolio() {
                     <div className="bg-zinc-950 border border-white/10 rounded-2xl overflow-hidden hover:border-white/20 transition-all">
                       {/* Preview */}
                       <a
-                        href={item.fileUrl}
+                        href={
+                          item.fileType === 'youtube' 
+                            ? `https://www.youtube.com/watch?v=${extractYouTubeId(item.fileUrl)}`
+                            : item.fileUrl
+                        }
                         target="_blank"
                         rel="noopener noreferrer"
                         className="block relative aspect-video overflow-hidden"
@@ -208,14 +272,16 @@ export default function Portfolio() {
                           <h3 className="text-xl font-semibold text-white group-hover:text-white/80 transition-colors">
                             {item.title}
                           </h3>
-                          <a
-                            href={item.fileUrl}
-                            download
-                            className="p-2 bg-white/5 rounded-lg hover:bg-white/10 transition-colors"
-                            onClick={(e) => e.stopPropagation()}
-                          >
-                            <Download size={18} className="text-white/60" />
-                          </a>
+                          {item.fileType !== 'youtube' && (
+                            <a
+                              href={item.fileUrl}
+                              download
+                              className="p-2 bg-white/5 rounded-lg hover:bg-white/10 transition-colors"
+                              onClick={(e) => e.stopPropagation()}
+                            >
+                              <Download size={18} className="text-white/60" />
+                            </a>
+                          )}
                         </div>
 
                         {item.description && (
