@@ -378,6 +378,48 @@ function SiteSettingsForm() {
         </div>
       </div>
 
+      <div className="space-y-4 pt-6 border-t border-zinc-800">
+        <h3 className="text-lg font-semibold text-white">SMS Alerts</h3>
+
+        <div>
+          <Label className="text-white/60">Alert Phone Number</Label>
+          <Input
+            type="tel"
+            value={formData.alertPhoneNumber || ''}
+            onChange={(e) => handleChange('alertPhoneNumber', e.target.value)}
+            placeholder="+15551234567"
+            className="bg-zinc-800 border-zinc-700 text-white mt-1"
+          />
+          <p className="text-xs text-white/40 mt-1">
+            Enter phone number with country code (e.g., +1 for US)
+          </p>
+        </div>
+
+        <div className="space-y-3">
+          <div className="flex items-center gap-3 p-4 bg-zinc-800/50 rounded-lg">
+            <Switch
+              checked={formData.alertOnMessages || false}
+              onCheckedChange={(v) => handleChange('alertOnMessages', v)}
+            />
+            <Label className="text-white/80">Alert me when new contact messages are received</Label>
+          </div>
+
+          <div className="flex items-center gap-3 p-4 bg-zinc-800/50 rounded-lg">
+            <Switch
+              checked={formData.alertOnPayments || false}
+              onCheckedChange={(v) => handleChange('alertOnPayments', v)}
+            />
+            <Label className="text-white/80">Alert me when payments are successful</Label>
+          </div>
+        </div>
+
+        <div className="bg-blue-500/10 border border-blue-500/30 rounded-lg p-4">
+          <p className="text-blue-400 text-sm">
+            📱 To receive SMS alerts, set your Twilio credentials in the app secrets (TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN, TWILIO_PHONE_NUMBER)
+          </p>
+        </div>
+      </div>
+
       <Button 
         onClick={() => mutation.mutate(formData)}
         disabled={mutation.isPending}

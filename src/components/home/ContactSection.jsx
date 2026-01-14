@@ -46,6 +46,13 @@ export default function ContactSection({ settings }) {
     
     try {
       await base44.entities.ContactSubmission.create(formData);
+      
+      // Send SMS alert
+      base44.functions.invoke('sendSMSAlert', {
+        message: `New contact message from ${formData.name} (${formData.email}): ${formData.message.substring(0, 100)}...`,
+        alertType: 'message'
+      }).catch(err => console.error('SMS alert failed:', err));
+      
       setSubmitted(true);
       setFormData({ name: '', email: '', subject: '', message: '' });
     } catch (error) {

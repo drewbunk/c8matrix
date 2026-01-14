@@ -26,6 +26,13 @@ export default function InvestorContact() {
 
     try {
       await base44.entities.InvestorInquiry.create(formData);
+      
+      // Send SMS alert
+      base44.functions.invoke('sendSMSAlert', {
+        message: `New investor inquiry from ${formData.name} (${formData.company || 'No company'}) - ${formData.email}`,
+        alertType: 'message'
+      }).catch(err => console.error('SMS alert failed:', err));
+      
       setIsSuccess(true);
       setFormData({ name: '', email: '', company: '', investmentFocus: '', message: '' });
       setTimeout(() => setIsSuccess(false), 5000);
