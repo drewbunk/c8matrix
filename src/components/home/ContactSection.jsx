@@ -44,26 +44,16 @@ export default function ContactSection({ settings }) {
     e.preventDefault();
     setIsSubmitting(true);
     
-    await base44.entities.ContactSubmission.create(formData);
-    
-    // Send email notification
-    await base44.integrations.Core.SendEmail({
-      to: 'drew@TreadAndTorque.com',
-      subject: `New Contact Form Submission: ${formData.subject || 'No Subject'}`,
-      body: `
-        New contact form submission from ${formData.name}
-        
-        Email: ${formData.email}
-        Subject: ${formData.subject || 'No Subject'}
-        
-        Message:
-        ${formData.message}
-      `
-    });
-    
-    setIsSubmitting(false);
-    setSubmitted(true);
-    setFormData({ name: '', email: '', subject: '', message: '' });
+    try {
+      await base44.entities.ContactSubmission.create(formData);
+      setSubmitted(true);
+      setFormData({ name: '', email: '', subject: '', message: '' });
+    } catch (error) {
+      console.error('Failed to submit contact form:', error);
+      toast.error('Failed to send message. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleBookPaidCall = async (e) => {
