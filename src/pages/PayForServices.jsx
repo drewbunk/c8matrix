@@ -12,20 +12,20 @@ import { createPageUrl } from '@/utils';
 const services = [
   {
     id: 'booking',
-    name: 'Booking Service',
+    name: 'Discovery Call',
     description: 'Professional consultation and booking',
     price: '$97',
-    priceId: 'price_1SoLs4EbxXzXBraI69wfXiWb',
+    priceId: 'price_1SoLR3ABTWLLAFjcfKFInoQ8',
     features: ['30-minute session', 'Video call included', 'Follow-up support'],
     icon: Briefcase,
   },
   {
-    id: 'collaboration',
-    name: 'Collaboration Project',
-    description: 'Custom partnership and collaboration',
-    price: '$500',
-    priceId: 'price_1SoL3LEbxXzXBraIXX8TpeXW',
-    features: ['Custom project scope', 'Dedicated support', 'Delivery guarantee'],
+    id: 'launch-package',
+    name: 'Launch Package (New Year Special)',
+    description: 'Complete launch package with special pricing',
+    price: '$1,497',
+    priceId: 'price_1SoQ4YABTWLLAFjcoxJ4UPUK',
+    features: ['Full launch support', 'Custom setup', 'Premium features'],
     icon: Handshake,
   },
 ];

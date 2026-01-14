@@ -8,12 +8,12 @@ import Bookings from './pages/Bookings';
 import ClientsAdmin from './pages/ClientsAdmin';
 import Home from './pages/Home';
 import InvestorContact from './pages/InvestorContact';
+import MediaManager from './pages/MediaManager';
 import PayForServices from './pages/PayForServices';
 import PaymentSuccess from './pages/PaymentSuccess';
 import Portfolio from './pages/Portfolio';
 import ProjectDetails from './pages/ProjectDetails';
 import Resume from './pages/Resume';
-import MediaManager from './pages/MediaManager';
 import __Layout from './Layout.jsx';
 
 
@@ -28,12 +28,12 @@ export const PAGES = {
     "ClientsAdmin": ClientsAdmin,
     "Home": Home,
     "InvestorContact": InvestorContact,
+    "MediaManager": MediaManager,
     "PayForServices": PayForServices,
     "PaymentSuccess": PaymentSuccess,
     "Portfolio": Portfolio,
     "ProjectDetails": ProjectDetails,
     "Resume": Resume,
-    "MediaManager": MediaManager,
 }
 
 export const pagesConfig = {
