@@ -12,6 +12,7 @@ import ShopSection from '@/components/home/ShopSection';
 import PortfolioSection from '@/components/home/PortfolioSection';
 import ContactSection from '@/components/home/ContactSection';
 import Footer from '@/components/home/Footer';
+import ChatWidget from '@/components/ChatWidget';
 
 export default function Home() {
   // Fetch all data
@@ -64,6 +65,8 @@ export default function Home() {
       <ContactSection settings={siteSettings} />
       
       <Footer brandName={siteSettings.brandName} />
+      
+      <ChatWidget />
     </div>
   );
 }
