@@ -118,23 +118,14 @@ export default function PortfolioSection({ portfolioItems = [] }) {
                   {/* Preview */}
                   <div className="relative aspect-video bg-zinc-900 flex items-center justify-center overflow-hidden">
                     {thumbnailUrl ? (
-                      <>
-                        <img
-                          src={thumbnailUrl}
-                          alt={item.title}
-                          className="w-full h-full object-cover"
-                        />
-                        {item.fileType === 'youtube' && (
-                          <div className="absolute inset-0 flex items-center justify-center bg-black/20">
-                            <div className="w-12 h-12 bg-red-600/90 rounded-full flex items-center justify-center">
-                              <div className="w-0 h-0 border-t-6 border-t-transparent border-l-10 border-l-white border-b-6 border-b-transparent ml-1" />
-                            </div>
-                          </div>
-                        )}
-                      </>
-                    ) : (
-                      <Icon size={48} className="text-white/20" />
-                    )}
+                       <img
+                         src={thumbnailUrl}
+                         alt={item.title}
+                         className="w-full h-full object-cover"
+                       />
+                     ) : (
+                       <Icon size={48} className="text-white/20" />
+                     )}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
                   </div>
 
