@@ -167,11 +167,12 @@ export default function Portfolio() {
 
     // PDF or document preview
     const Icon = getFileIcon(item.fileType);
+    const thumbnailUrl = getThumbnailUrl(item);
     return (
       <div className="flex items-center justify-center h-full bg-zinc-900 relative">
-        {item.thumbnailUrl ? (
+        {thumbnailUrl ? (
           <img 
-            src={item.thumbnailUrl} 
+            src={thumbnailUrl} 
             alt={item.title}
             className="w-full h-full object-cover"
             onError={(e) => {
@@ -180,7 +181,7 @@ export default function Portfolio() {
             }}
           />
         ) : null}
-        <div className={`${item.thumbnailUrl ? 'hidden' : 'flex'} fallback-icon items-center justify-center absolute inset-0`}>
+        <div className={`${thumbnailUrl ? 'hidden' : 'flex'} fallback-icon items-center justify-center absolute inset-0`}>
           <Icon size={48} className="text-white/40" />
         </div>
       </div>
