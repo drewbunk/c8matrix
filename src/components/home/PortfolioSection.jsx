@@ -94,10 +94,8 @@ export default function PortfolioSection({ portfolioItems = [] }) {
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
           {sortedItems.map((item, i) => {
             const Icon = getFileIcon(item.fileType);
+            const thumbnailUrl = getThumbnailUrl(item);
             const videoId = item.fileType === 'youtube' ? extractYouTubeId(item.fileUrl) : null;
-            const thumbnailUrl = item.fileType === 'youtube' && videoId 
-              ? getYouTubeThumbnail(videoId)
-              : item.thumbnailUrl;
             
             return (
               <motion.div
