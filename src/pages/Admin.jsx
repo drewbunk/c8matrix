@@ -17,17 +17,18 @@ import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import { toast } from 'sonner';
 
-function AdminLogin({ onLogin, storedPassword }) {
+function AdminLogin({ onLogin, storedLoginName, storedPassword }) {
+  const [loginName, setLoginName] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (password === storedPassword) {
+    if (loginName === storedLoginName && password === storedPassword) {
       localStorage.setItem('adminAuth', 'true');
       onLogin();
     } else {
-      setError('Incorrect password');
+      setError('Incorrect login name or password');
     }
   };
 
@@ -41,11 +42,20 @@ function AdminLogin({ onLogin, storedPassword }) {
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
             <Input
+              type="text"
+              placeholder="Enter login name"
+              value={loginName}
+              onChange={(e) => setLoginName(e.target.value)}
+              className="bg-zinc-800 border-zinc-700 text-white"
+              autoComplete="username"
+            />
+            <Input
               type="password"
               placeholder="Enter admin password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className="bg-zinc-800 border-zinc-700 text-white"
+              autoComplete="current-password"
             />
             {error && <p className="text-red-400 text-sm">{error}</p>}
             <Button type="submit" className="w-full bg-white text-black hover:bg-white/90">
