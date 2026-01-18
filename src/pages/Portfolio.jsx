@@ -72,6 +72,22 @@ export default function Portfolio() {
     return `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
   };
 
+  const getThumbnailUrl = (item) => {
+    // If thumbnail is explicitly provided, use it
+    if (item.thumbnailUrl) return item.thumbnailUrl;
+    
+    // Auto-generate thumbnail for YouTube videos
+    if (item.fileType === 'youtube') {
+      const videoId = extractYouTubeId(item.fileUrl);
+      if (videoId) return getYouTubeThumbnail(videoId);
+    }
+    
+    // For images, use the file URL itself
+    if (item.fileType === 'image') return item.fileUrl;
+    
+    return null;
+  };
+
   const renderPreview = (item) => {
     // Handle YouTube videos
     if (item.fileType === 'youtube') {
@@ -84,10 +100,11 @@ export default function Portfolio() {
         );
       }
 
+      const thumbnailUrl = getThumbnailUrl(item);
       return (
         <div className="relative w-full h-full bg-zinc-900">
           <img 
-            src={getYouTubeThumbnail(videoId)}
+            src={thumbnailUrl}
             alt={item.title}
             className="w-full h-full object-cover"
             onError={(e) => {
