@@ -555,7 +555,7 @@ function CRUDList({ entityName, schema, renderItem, emptyMessage }) {
                             type="file"
                             accept={field.key === 'thumbnailUrl' || field.key === 'imageUrl' ? 'image/*' : '*'}
                             className="hidden"
-                            id={`upload-${field.key}`}
+                            id={`upload-${field.key}-${editingItem}`}
                             onChange={async (e) => {
                               const file = e.target.files[0];
                               if (!file) return;
@@ -571,16 +571,11 @@ function CRUDList({ entityName, schema, renderItem, emptyMessage }) {
                               }
                             }}
                           />
-                          <label htmlFor={`upload-${field.key}`}>
-                            <Button
-                              type="button"
-                              as="span"
-                              variant="outline"
-                              className="border-white/20 text-white hover:bg-white/5 cursor-pointer mt-1"
-                            >
-                              <Upload size={16} className="mr-2" />
+                          <label htmlFor={`upload-${field.key}-${editingItem}`} className="mt-1">
+                            <div className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 border border-white/20 bg-transparent shadow-sm hover:bg-white/5 text-white h-9 px-4 py-2 cursor-pointer">
+                              <Upload size={16} />
                               Upload
-                            </Button>
+                            </div>
                           </label>
                         </>
                       )}
