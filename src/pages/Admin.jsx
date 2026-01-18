@@ -668,6 +668,7 @@ export default function Admin() {
     queryFn: () => base44.entities.SiteSettings.list(),
   });
 
+  const storedLoginName = settings?.[0]?.adminLoginName || 'lamont770@gmail.com';
   const storedPassword = settings?.[0]?.adminPassword || 'c8matrix2024';
 
   useEffect(() => {
@@ -676,7 +677,7 @@ export default function Admin() {
   }, []);
 
   if (!isAuthenticated) {
-    return <AdminLogin onLogin={() => setIsAuthenticated(true)} storedPassword={storedPassword} />;
+    return <AdminLogin onLogin={() => setIsAuthenticated(true)} storedLoginName={storedLoginName} storedPassword={storedPassword} />;
   }
 
   const featuredSchema = [
