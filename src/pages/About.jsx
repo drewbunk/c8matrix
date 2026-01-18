@@ -59,22 +59,28 @@ export default function About() {
             transition={{ duration: 1 }}
             className="relative"
           >
-            <div className="flex gap-8 animate-scroll">
-              {/* Double the photos for seamless loop */}
-              {[...sortedPhotos, ...sortedPhotos].map((photo, i) => (
-                <div
-                  key={`${photo.id}-${i}`}
-                  className="relative flex-shrink-0 w-[85vw] md:w-[70vw] lg:w-[60vw] aspect-[21/9] rounded-2xl overflow-hidden group"
-                >
-                  <img
-                    src={photo.imageUrl}
-                    alt={`Cinematic photo ${i + 1}`}
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-black/20" />
-                </div>
-              ))}
-            </div>
+            {sortedPhotos.length > 0 ? (
+              <div className="flex gap-8 animate-scroll">
+                {/* Double the photos for seamless loop */}
+                {[...sortedPhotos, ...sortedPhotos].map((photo, i) => (
+                  <div
+                    key={`${photo.id}-${i}`}
+                    className="relative flex-shrink-0 w-[85vw] md:w-[70vw] lg:w-[60vw] aspect-[21/9] rounded-2xl overflow-hidden group"
+                  >
+                    <img
+                      src={photo.imageUrl}
+                      alt={`Cinematic photo ${i + 1}`}
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-black/20" />
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="text-center py-20 text-white/40">
+                <p>No photos added yet</p>
+              </div>
+            )}
             
             {/* Gradient overlays for fade effect */}
             <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-black to-transparent pointer-events-none" />
