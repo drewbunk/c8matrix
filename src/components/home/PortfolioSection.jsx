@@ -40,6 +40,28 @@ const getYouTubeThumbnail = (videoId) => {
   return `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
 };
 
+const getThumbnailUrl = (item) => {
+  // If custom thumbnail is provided, use it
+  if (item.thumbnailUrl) {
+    return item.thumbnailUrl;
+  }
+  
+  // For YouTube videos, generate thumbnail
+  if (item.fileType === 'youtube') {
+    const videoId = extractYouTubeId(item.fileUrl);
+    if (videoId) {
+      return getYouTubeThumbnail(videoId);
+    }
+  }
+  
+  // For image files, use the file URL as thumbnail
+  if (item.fileType === 'image') {
+    return item.fileUrl;
+  }
+  
+  return null;
+};
+
 export default function PortfolioSection({ portfolioItems = [] }) {
   const sortedItems = [...portfolioItems]
     .sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0))
