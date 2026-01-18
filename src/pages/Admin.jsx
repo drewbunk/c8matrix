@@ -541,12 +541,51 @@ function CRUDList({ entityName, schema, renderItem, emptyMessage }) {
                     className="bg-zinc-800 border-zinc-700 text-white mt-1"
                   />
                 ) : (
-                  <Input
-                    value={formData[field.key] || ''}
-                    onChange={(e) => setFormData({ ...formData, [field.key]: e.target.value })}
-                    className="bg-zinc-800 border-zinc-700 text-white mt-1"
-                    placeholder={field.placeholder}
-                  />
+                  <div className="space-y-2">
+                    <div className="flex gap-2">
+                      <Input
+                        value={formData[field.key] || ''}
+                        onChange={(e) => setFormData({ ...formData, [field.key]: e.target.value })}
+                        className="bg-zinc-800 border-zinc-700 text-white mt-1 flex-1"
+                        placeholder={field.placeholder}
+                      />
+                      {field.fileUpload && (
+                        <>
+                          <input
+                            type="file"
+                            accept={field.key === 'thumbnailUrl' || field.key === 'imageUrl' ? 'image/*' : '*'}
+                            className="hidden"
+                            id={`upload-${field.key}`}
+                            onChange={async (e) => {
+                              const file = e.target.files[0];
+                              if (!file) return;
+
+                              try {
+                                toast.info('Uploading file...');
+                                const { file_url } = await base44.integrations.Core.UploadFile({ file });
+                                setFormData({ ...formData, [field.key]: file_url });
+                                toast.success('File uploaded! URL updated.');
+                              } catch (error) {
+                                console.error('Upload error:', error);
+                                toast.error('Failed to upload file');
+                              }
+                            }}
+                          />
+                          <label htmlFor={`upload-${field.key}`}>
+                            <Button
+                              type="button"
+                              as="span"
+                              variant="outline"
+                              className="border-white/20 text-white hover:bg-white/5 cursor-pointer mt-1"
+                            >
+                              <Upload size={16} className="mr-2" />
+                              Upload
+                            </Button>
+                          </label>
+                        </>
+                      )}
+                    </div>
+                  </div>
                 )}
               </div>
             ))}
@@ -673,9 +712,9 @@ export default function Admin() {
   const portfolioSchema = [
     { key: 'title', label: 'Title', type: 'text' },
     { key: 'description', label: 'Description', type: 'textarea' },
-    { key: 'fileUrl', label: 'File URL', type: 'text' },
-    { key: 'fileType', label: 'File Type', type: 'select', options: ['pdf', 'image', 'video', 'document'] },
-    { key: 'thumbnailUrl', label: 'Thumbnail URL (optional)', type: 'text' },
+    { key: 'fileUrl', label: 'File URL', type: 'text', fileUpload: true },
+    { key: 'fileType', label: 'File Type', type: 'select', options: ['pdf', 'image', 'video', 'youtube', 'document'] },
+    { key: 'thumbnailUrl', label: 'Thumbnail URL (optional)', type: 'text', fileUpload: true },
     { key: 'category', label: 'Category', type: 'text', placeholder: 'e.g., Presentations, Case Studies' },
     { key: 'sortOrder', label: 'Sort Order', type: 'number' },
   ];
