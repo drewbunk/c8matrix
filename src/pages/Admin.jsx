@@ -372,7 +372,20 @@ function SiteSettingsForm() {
       </div>
 
       <div className="space-y-4 pt-6 border-t border-zinc-800">
-        <h3 className="text-lg font-semibold text-white">Admin Password</h3>
+        <h3 className="text-lg font-semibold text-white">Admin Security</h3>
+        <div>
+          <Label className="text-white/60">Admin Login Name</Label>
+          <Input
+            type="text"
+            value={formData.adminLoginName || ''}
+            onChange={(e) => handleChange('adminLoginName', e.target.value)}
+            placeholder="Enter login name"
+            className="bg-zinc-800 border-zinc-700 text-white mt-1"
+          />
+          <p className="text-xs text-white/40 mt-1">
+            Customize your login username for better security
+          </p>
+        </div>
         <div>
           <Label className="text-white/60">Change Admin Password</Label>
           <Input
