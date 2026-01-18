@@ -125,9 +125,10 @@ export default function Portfolio() {
     }
 
     if (item.fileType === 'image') {
+      const thumbnailUrl = getThumbnailUrl(item);
       return (
         <img 
-          src={item.thumbnailUrl || item.fileUrl} 
+          src={thumbnailUrl} 
           alt={item.title}
           className="w-full h-full object-cover"
           onError={(e) => {
