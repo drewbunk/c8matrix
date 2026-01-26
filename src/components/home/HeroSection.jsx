@@ -98,7 +98,7 @@ export default function HeroSection({ settings }) {
       {/* Image Background */}
       <div className="absolute inset-0">
         <img 
-          src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/695f1f19128f966dc5681717/931646b33_A4F90814-1733-4776-9AB2-E19A38EE9578.jpg"
+          src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/695f1f19128f966dc5681717/a5f444261_9626D0CF-88FB-4755-9434-720DBDF4F0E6.jpg"
           alt="Hero Background"
           className="absolute inset-0 w-full h-full object-cover object-center"
         />
