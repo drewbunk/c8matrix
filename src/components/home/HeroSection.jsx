@@ -97,11 +97,15 @@ export default function HeroSection({ settings }) {
     <section id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Image Background */}
       <div className="absolute inset-0">
-        <img 
-          src="https://higgsfield.ai/_next/image?url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_37d211oH6Kq5XZ6sJ8QglkOOPRj%2F9ac51d63-b116-4f9c-8f74-a2e3b6e7330f.png&w=828&q=75"
-          alt="Hero Background"
-          className="absolute inset-0 w-full h-full object-cover object-[65%_center]"
-        />
+        {heroPosterImageUrl ? (
+          <img 
+            src={heroPosterImageUrl}
+            alt="Hero Background"
+            className="absolute inset-0 w-full h-full object-cover object-[65%_center]"
+          />
+        ) : (
+          <div className="absolute inset-0 bg-gradient-to-br from-zinc-900 via-black to-zinc-800" />
+        )}
         {/* Overlays */}
         <div className="absolute inset-0 bg-black/30" />
         <div className="absolute inset-0 bg-gradient-to-t from-black via-black/10 to-transparent" />
