@@ -97,15 +97,11 @@ export default function HeroSection({ settings }) {
     <section id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Image Background */}
       <div className="absolute inset-0">
-        {heroPosterImageUrl ? (
-          <img 
-            src={heroPosterImageUrl}
-            alt="Hero Background"
-            className="absolute inset-0 w-full h-full object-cover object-[65%_center]"
-          />
-        ) : (
-          <div className="absolute inset-0 bg-gradient-to-br from-zinc-900 via-black to-zinc-800" />
-        )}
+        <img 
+          src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/695f1f19128f966dc5681717/063a74b1c_9ac51d63-b116-4f9c-8f74-a2e3b6e7330f1.png"
+          alt="Hero Background"
+          className="absolute inset-0 w-full h-full object-cover object-center"
+        />
         {/* Overlays */}
         <div className="absolute inset-0 bg-black/30" />
         <div className="absolute inset-0 bg-gradient-to-t from-black via-black/10 to-transparent" />
