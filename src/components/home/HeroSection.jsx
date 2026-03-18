@@ -98,7 +98,7 @@ export default function HeroSection({ settings }) {
       {/* Image Background */}
       <div className="absolute inset-0">
         <img 
-          src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/695f1f19128f966dc5681717/a5f444261_9626D0CF-88FB-4755-9434-720DBDF4F0E6.jpg"
+          src="https://media.base44.com/images/public/695f1f19128f966dc5681717/b94a6e0c4_hf_20260301_001604_60db091d-576f-410e-aae2-6cd7d1a0ae5b.jpg"
           alt="Hero Background"
           className="absolute inset-0 w-full h-full object-cover object-center"
         />
