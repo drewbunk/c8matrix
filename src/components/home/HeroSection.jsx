@@ -95,13 +95,16 @@ export default function HeroSection({ settings }) {
 
   return (
     <section id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Image Background */}
+      {/* Video Background */}
       <div className="absolute inset-0">
-        <img 
-          src="https://media.base44.com/images/public/695f1f19128f966dc5681717/f18c6bec8_hf_20260116_011313_fec3c9b9-1abd-4212-aebf-0b39934a59ff.png"
-          alt="Hero Background"
-          className="absolute inset-0 w-full h-full object-cover object-center"
-        />
+        <video
+          autoPlay
+          muted
+          playsInline
+          className="absolute inset-0 w-full h-full object-cover"
+        >
+          <source src="https://d8j0ntlcm91z4.cloudfront.net/user_37d211oH6Kq5XZ6sJ8QglkOOPRj/hf_20260116_014728_12249bc1-f006-4ac9-a9fc-b05e6707846b.mp4" type="video/mp4" />
+        </video>
       </div>
 
       {/* Content */}
