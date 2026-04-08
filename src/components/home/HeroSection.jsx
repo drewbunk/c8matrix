@@ -108,19 +108,8 @@ export default function HeroSection({ settings }) {
       </div>
 
       {/* Content */}
-      <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8 text-center">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, ease: [0.25, 0.46, 0.45, 0.94] }}
-          className="space-y-8"
-        >
-
-
-
-
-          {/* CTAs */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
+      <div className="absolute bottom-24 left-0 right-0 z-10 flex justify-center">
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <Button
               onClick={() => scrollToSection('#projects')}
               className="bg-white text-black hover:bg-white/90 px-8 py-6 text-base font-semibold tracking-wide rounded-full transition-all duration-300 hover:scale-105"
@@ -142,8 +131,7 @@ export default function HeroSection({ settings }) {
             >
               {secondaryCTAText}
             </Button>
-          </div>
-        </motion.div>
+        </div>
       </div>
 
       {/* Video Controls (for mp4) */}
