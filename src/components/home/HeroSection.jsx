@@ -112,6 +112,16 @@ export default function HeroSection({ settings }) {
           transition={{ duration: 1, ease: [0.25, 0.46, 0.45, 0.94] }}
           className="space-y-8"
         >
+          {/* Brand Name */}
+          <h1 className="text-6xl sm:text-7xl lg:text-9xl font-black tracking-tighter text-white">
+            {brandName}
+          </h1>
+
+          {/* Tagline */}
+          <p className="text-lg sm:text-xl lg:text-2xl text-white/70 font-light tracking-wide max-w-2xl mx-auto">
+            {tagline}
+          </p>
+
           {/* CTAs */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
             <Button
@@ -136,16 +146,6 @@ export default function HeroSection({ settings }) {
               {secondaryCTAText}
             </Button>
           </div>
-
-          {/* Brand Name */}
-          <h1 className="text-6xl sm:text-7xl lg:text-9xl font-black tracking-tighter text-white">
-            {brandName}
-          </h1>
-
-          {/* Tagline */}
-          <p className="text-lg sm:text-xl lg:text-2xl text-white/70 font-light tracking-wide max-w-2xl mx-auto">
-            {tagline}
-          </p>
         </motion.div>
       </div>
 
