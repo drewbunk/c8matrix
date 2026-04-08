@@ -8,7 +8,7 @@ import AboutSection from '@/components/home/AboutSection';
 import VideoReelSection from '@/components/home/VideoReelSection';
 import FeaturedSection from '@/components/home/FeaturedSection';
 import ProjectsSection from '@/components/home/ProjectsSection';
-import ShopSection from '@/components/home/ShopSection';
+
 import PortfolioSection from '@/components/home/PortfolioSection';
 import ContactSection from '@/components/home/ContactSection';
 import Footer from '@/components/home/Footer';
@@ -31,10 +31,7 @@ export default function Home() {
     queryFn: () => base44.entities.Project.list(),
   });
 
-  const { data: products } = useQuery({
-    queryKey: ['products'],
-    queryFn: () => base44.entities.Product.list(),
-  });
+
 
   const { data: portfolioItems } = useQuery({
     queryKey: ['portfolio'],
@@ -58,7 +55,7 @@ export default function Home() {
       
       <ProjectsSection projects={projects || []} />
       
-      <ShopSection products={products || []} />
+
 
       <PortfolioSection portfolioItems={portfolioItems || []} />
 

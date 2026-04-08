@@ -11,8 +11,6 @@ const navLinks = [
   { label: 'Resume', href: 'Resume', type: 'page' },
   { label: 'Projects', href: '#projects', type: 'anchor' },
   { label: 'Portfolio', href: '#portfolio', type: 'anchor' },
-  { label: 'Shop', href: '#shop', type: 'anchor' },
-  { label: 'Hire Me', href: 'PayForServices', type: 'page' },
   { label: 'Investors', href: 'InvestorContact', type: 'page' },
   { label: 'Contact', href: '#contact', type: 'anchor' },
   { label: 'Admin', href: 'Admin', type: 'page' },
