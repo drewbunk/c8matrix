@@ -26,9 +26,9 @@ export default function Home() {
     queryFn: () => base44.entities.FeaturedContent.list(),
   });
 
-  const { data: portfolioItems } = useQuery({
-    queryKey: ['portfolio'],
-    queryFn: () => base44.entities.Portfolio.list(),
+  const { data: projects } = useQuery({
+    queryKey: ['projects'],
+    queryFn: () => base44.entities.Project.list(),
   });
 
   const { data: products } = useQuery({
@@ -53,7 +53,7 @@ export default function Home() {
       
 
 
-      <PortfolioSection portfolioItems={portfolioItems || []} />
+      <PortfolioSection projects={projects || []} />
 
       <ShopSection products={products || []} />
 

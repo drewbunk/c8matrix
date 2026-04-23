@@ -1,73 +1,23 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { FileText, Image, Video, File, ExternalLink, Download } from 'lucide-react';
+import { ArrowUpRight, Layers } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 
-const getFileIcon = (fileType) => {
-  switch (fileType) {
-    case 'pdf':
-    case 'document':
-      return FileText;
-    case 'image':
-      return Image;
-    case 'video':
-    case 'youtube':
-      return Video;
-    default:
-      return File;
-  }
+const typeColors = {
+  App: 'bg-blue-500/10 text-blue-400',
+  Service: 'bg-purple-500/10 text-purple-400',
+  Content: 'bg-amber-500/10 text-amber-400',
+  Partnership: 'bg-emerald-500/10 text-emerald-400',
 };
 
-const extractYouTubeId = (url) => {
-  if (!url) return null;
-  if (/^[a-zA-Z0-9_-]{11}$/.test(url)) return url;
-  
-  const patterns = [
-    /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([a-zA-Z0-9_-]{11})/,
-    /youtube\.com\/watch\?.*v=([a-zA-Z0-9_-]{11})/
-  ];
-  
-  for (const pattern of patterns) {
-    const match = url.match(pattern);
-    if (match) return match[1];
-  }
-  return null;
-};
-
-const getYouTubeThumbnail = (videoId) => {
-  return `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
-};
-
-const getThumbnailUrl = (item) => {
-  // If custom thumbnail is provided, use it
-  if (item.thumbnailUrl) {
-    return item.thumbnailUrl;
-  }
-  
-  // For YouTube videos, generate thumbnail
-  if (item.fileType === 'youtube') {
-    const videoId = extractYouTubeId(item.fileUrl);
-    if (videoId) {
-      return getYouTubeThumbnail(videoId);
-    }
-  }
-  
-  // For image files, use the file URL as thumbnail
-  if (item.fileType === 'image') {
-    return item.fileUrl;
-  }
-  
-  return null;
-};
-
-export default function PortfolioSection({ portfolioItems = [] }) {
-  const sortedItems = [...portfolioItems]
+export default function PortfolioSection({ projects = [] }) {
+  const sortedProjects = [...projects]
     .sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0))
-    .slice(0, 6); // Show first 6 items
+    .slice(0, 6);
 
-  if (sortedItems.length === 0) return null;
+  if (sortedProjects.length === 0) return null;
 
   return (
     <section id="portfolio" className="py-32 bg-black">
@@ -80,78 +30,65 @@ export default function PortfolioSection({ portfolioItems = [] }) {
           className="text-center mb-16"
         >
           <p className="text-white/40 text-sm font-medium tracking-[0.3em] uppercase mb-4">
-            Resources
+            Portfolio
           </p>
           <h2 className="text-4xl lg:text-5xl font-bold text-white tracking-tight mb-6">
-            Portfolio Files
+            Projects & Apps
           </h2>
           <p className="text-white/60 text-lg max-w-2xl mx-auto">
-            Browse and download portfolio documents, media, and resources
+            A selection of what I've built — visit the portfolio for the full picture.
           </p>
         </motion.div>
 
-        {/* Portfolio Grid */}
+        {/* Projects Grid */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-          {sortedItems.map((item, i) => {
-            const Icon = getFileIcon(item.fileType);
-            const thumbnailUrl = getThumbnailUrl(item);
-            const videoId = item.fileType === 'youtube' ? extractYouTubeId(item.fileUrl) : null;
-            
-            return (
-              <motion.div
-                key={item.id}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
-              >
-                <a
-                  href={
-                    item.fileType === 'youtube' && videoId
-                      ? `https://www.youtube.com/watch?v=${videoId}`
-                      : item.fileUrl
-                  }
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="group block bg-zinc-950 border border-white/10 rounded-xl overflow-hidden hover:border-white/20 transition-all"
-                >
-                  {/* Preview */}
-                  <div className="relative aspect-video bg-zinc-900 flex items-center justify-center overflow-hidden">
-                    {thumbnailUrl ? (
-                       <img
-                         src={thumbnailUrl}
-                         alt={item.title}
-                         className="w-full h-full object-cover"
-                       />
-                     ) : (
-                       <Icon size={48} className="text-white/20" />
-                     )}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-                  </div>
+          {sortedProjects.map((project, i) => (
+            <motion.div
+              key={project.id}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.1 }}
+              className="group"
+            >
+              <Link to={createPageUrl('Portfolio')} className="block h-full">
+                <div className="h-full bg-zinc-950 border border-white/10 rounded-2xl overflow-hidden hover:border-white/20 transition-all">
+                  {/* Thumbnail */}
+                  {project.thumbnailImageUrl ? (
+                    <div className="aspect-video overflow-hidden">
+                      <img
+                        src={project.thumbnailImageUrl}
+                        alt={project.name}
+                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                      />
+                    </div>
+                  ) : (
+                    <div className="aspect-video bg-gradient-to-br from-zinc-800 to-zinc-900 flex items-center justify-center">
+                      <Layers size={40} className="text-white/10" />
+                    </div>
+                  )}
 
                   {/* Info */}
                   <div className="p-5">
                     <div className="flex items-start justify-between gap-2 mb-2">
-                      <h3 className="text-lg font-semibold text-white line-clamp-1 group-hover:text-white/80 transition-colors">
-                        {item.title}
+                      <h3 className="text-lg font-semibold text-white group-hover:text-white/80 transition-colors line-clamp-1">
+                        {project.name}
                       </h3>
-                      <ExternalLink size={16} className="text-white/40 flex-shrink-0 mt-1" />
+                      <ArrowUpRight size={16} className="text-white/40 flex-shrink-0 mt-1 group-hover:text-white/70 transition-colors" />
                     </div>
-                    {item.description && (
+                    {project.shortDescription && (
                       <p className="text-white/50 text-sm line-clamp-2 mb-3">
-                        {item.description}
+                        {project.shortDescription}
                       </p>
                     )}
-                    {item.category && (
-                      <span className="inline-block px-2.5 py-1 bg-white/5 rounded-full text-xs text-white/60">
-                        {item.category}
-                      </span>
-                    )}
+                    <span className={`inline-block px-3 py-1 rounded-full text-xs font-medium ${typeColors[project.type] || 'bg-white/5 text-white/50'}`}>
+                      {project.type}
+                    </span>
                   </div>
-                </a>
-              </motion.div>
-            );
-          })}
+                </div>
+              </Link>
+            </motion.div>
+          ))}
         </div>
 
         {/* View All Button */}
@@ -166,7 +103,7 @@ export default function PortfolioSection({ portfolioItems = [] }) {
               variant="outline"
               className="border-white/20 text-white hover:bg-white/5 px-8 py-6 text-base rounded-full"
             >
-              View All Files
+              View Full Portfolio
             </Button>
           </Link>
         </motion.div>
