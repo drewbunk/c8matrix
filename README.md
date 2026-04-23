@@ -1,39 +1,32 @@
-**Welcome to your Base44 project** 
+# C8Matrix
 
-**About**
+Brand and product-focused app concept tied to creator identity, automotive culture, and digital audience engagement.
 
-View and Edit  your app on [Base44.com](http://Base44.com) 
+## Overview
 
-This project contains everything you need to run your app locally.
+C8Matrix represents a broader creator-driven brand direction that blends media, product thinking, and audience-facing digital experiences.
 
-**Edit the code in your local development environment**
+This project supports a content-first identity while also exploring practical app and business opportunities connected to an established personal brand.
 
-Any change pushed to the repo will also be reflected in the Base44 Builder.
+## Features
 
-**Prerequisites:** 
+- Creator-focused brand direction
+- Audience engagement concepts
+- Digital product positioning
+- Cross-platform business potential
+- Built around identity, media, and product growth
 
-1. Clone the repository using the project's Git URL 
-2. Navigate to the project directory
-3. Install dependencies: `npm install`
-4. Create an `.env.local` file and set the right environment variables
+## Tech Stack
 
-```
-VITE_BASE44_APP_ID=your_app_id
-VITE_BASE44_APP_BASE_URL=your_backend_url
+- JavaScript
+- Frontend web app structure
+- Brand-led product design
+- Digital concept development
 
-e.g.
-VITE_BASE44_APP_ID=cbef744a8545c389ef439ea6
-VITE_BASE44_APP_BASE_URL=https://my-to-do-list-81bfaad7.base44.app
-```
+## Status
 
-Run the app: `npm run dev`
+Public showcase / brand concept repo
 
-**Publish your changes**
+## Notes
 
-Open [Base44.com](http://Base44.com) and click on Publish.
-
-**Docs & Support**
-
-Documentation: [https://docs.base44.com/Integrations/Using-GitHub](https://docs.base44.com/Integrations/Using-GitHub)
-
-Support: [https://app.base44.com/support](https://app.base44.com/support)
+This public repository is intended to showcase the concept, direction, and project structure. It may not include full private assets, business details, or production configuration.app.base44.com/support)
