@@ -110,16 +110,9 @@ export default function HeroSection({ settings }) {
       {/* Content */}
       <div className="absolute bottom-24 left-0 right-0 z-10 flex justify-center">
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Button
-              onClick={() => scrollToSection('#projects')}
-              className="bg-white text-black hover:bg-white/90 px-8 py-6 text-base font-semibold tracking-wide rounded-full transition-all duration-300 hover:scale-105"
-            >
-              Projects
-            </Button>
             <Link to={createPageUrl('Portfolio')}>
               <Button
-                variant="outline"
-                className="border-white/30 text-white hover:bg-white/10 px-8 py-6 text-base font-medium tracking-wide rounded-full transition-all duration-300"
+                className="bg-white text-black hover:bg-white/90 px-8 py-6 text-base font-semibold tracking-wide rounded-full transition-all duration-300 hover:scale-105"
               >
                 Portfolio
               </Button>
