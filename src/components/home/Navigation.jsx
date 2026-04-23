@@ -9,8 +9,8 @@ const navLinks = [
   { label: 'About', href: 'About', type: 'page' },
   { label: 'Featured', href: '#featured', type: 'anchor' },
   { label: 'Resume', href: 'Resume', type: 'page' },
-  { label: 'Projects', href: '#projects', type: 'anchor' },
-  { label: 'Portfolio', href: '#portfolio', type: 'anchor' },
+  { label: 'Portfolio', href: 'Portfolio', type: 'page' },
+
   { label: 'Investors', href: 'InvestorContact', type: 'page' },
   { label: 'Contact', href: '#contact', type: 'anchor' },
   { label: 'Admin', href: 'Admin', type: 'page' },

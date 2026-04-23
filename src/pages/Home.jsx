@@ -7,9 +7,7 @@ import HeroSection from '@/components/home/HeroSection';
 import AboutSection from '@/components/home/AboutSection';
 import VideoReelSection from '@/components/home/VideoReelSection';
 import FeaturedSection from '@/components/home/FeaturedSection';
-import ProjectsSection from '@/components/home/ProjectsSection';
 
-import PortfolioSection from '@/components/home/PortfolioSection';
 import ContactSection from '@/components/home/ContactSection';
 import Footer from '@/components/home/Footer';
 import ChatWidget from '@/components/ChatWidget';
@@ -26,17 +24,7 @@ export default function Home() {
     queryFn: () => base44.entities.FeaturedContent.list(),
   });
 
-  const { data: projects } = useQuery({
-    queryKey: ['projects'],
-    queryFn: () => base44.entities.Project.list(),
-  });
 
-
-
-  const { data: portfolioItems } = useQuery({
-    queryKey: ['portfolio'],
-    queryFn: () => base44.entities.Portfolio.list(),
-  });
 
   // Get first settings record or use defaults
   const siteSettings = settings?.[0] || {};
@@ -53,11 +41,7 @@ export default function Home() {
       
       <FeaturedSection featuredContent={featuredContent || []} />
       
-      <ProjectsSection projects={projects || []} />
-      
 
-
-      <PortfolioSection portfolioItems={portfolioItems || []} />
 
       <ContactSection settings={siteSettings} />
       
