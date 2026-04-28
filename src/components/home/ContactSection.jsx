@@ -1,98 +1,104 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Send, Mail, Instagram, Youtube, Linkedin, CreditCard } from 'lucide-react';
+import { Send, Mail, Instagram, Youtube, Linkedin, ChevronDown, ChevronUp } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { base44 } from '@/api/base44Client';
 import { toast } from 'sonner';
 
-// TikTok icon component
 const TikTokIcon = ({ size = 24, className }) => (
-  <svg 
-    viewBox="0 0 24 24" 
-    width={size} 
-    height={size} 
-    fill="currentColor"
-    className={className}
-  >
+  <svg viewBox="0 0 24 24" width={size} height={size} fill="currentColor" className={className}>
     <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/>
   </svg>
 );
 
+const services = [
+  {
+    title: 'Web Design & Smart Websites',
+    items: ['Custom business websites', 'Mobile-friendly responsive design', 'Landing pages for ads and lead generation', 'Booking / appointment integrations', 'E-commerce stores', 'SEO-ready structure', 'Fast loading modern layouts', 'Website refresh / redesigns'],
+  },
+  {
+    title: 'AI Agent Integration',
+    items: ['24/7 website chat agents', 'Customer service AI assistants', 'Lead capture bots', 'Appointment scheduling bots', 'FAQ automation', 'Sales inquiry responders', 'CRM integration support', 'Internal business workflow AI tools'],
+  },
+  {
+    title: 'App Design & Development',
+    items: ['Mobile app planning', 'MVP startup apps', 'iPhone / Android app concepts', 'Subscription app models', 'Customer loyalty apps', 'Booking / membership apps', 'Internal staff tools', 'UI / UX design'],
+  },
+  {
+    title: 'Video Production & Content Creation',
+    items: ['Promo videos', 'Social media reels', 'Product showcase videos', 'Brand story videos', 'AI-assisted video creation', 'Voiceover content', 'Ad creatives', 'Short-form content strategy'],
+  },
+  {
+    title: 'Marketing & Growth',
+    items: ['Social media strategy', 'Instagram growth support', 'Brand positioning', 'Paid ad landing pages', 'Lead generation systems', 'Email / SMS campaigns', 'Content calendars', 'Reputation management'],
+  },
+  {
+    title: 'Consulting & Training',
+    items: ['Business growth consulting', 'Startup launch guidance', 'AI implementation strategy', 'Sales process improvement', 'Team training', 'Customer service systems', 'Workflow efficiency audits', 'One-on-one coaching'],
+  },
+];
+
+const whyChoose = [
+  'Fast execution', 'Modern AI solutions', 'Affordable compared to agencies',
+  'Real business experience', 'Hands-on support', 'Creative + strategic approach',
+  'Focused on revenue and growth',
+];
+
+const quickOptions = [
+  'Website', 'AI Chat Agent', 'App Idea', 'Video Content',
+  'Marketing', 'Consulting', 'Training', 'Full Business Setup',
+];
+
+function ServiceAccordion({ service }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <div className="border border-white/10 rounded-xl overflow-hidden">
+      <button
+        onClick={() => setOpen(!open)}
+        className="w-full flex items-center justify-between px-5 py-4 text-left hover:bg-white/5 transition-colors"
+      >
+        <span className="text-white font-medium text-sm">{service.title}</span>
+        {open ? <ChevronUp size={16} className="text-white/40" /> : <ChevronDown size={16} className="text-white/40" />}
+      </button>
+      {open && (
+        <div className="px-5 pb-4 grid grid-cols-1 sm:grid-cols-2 gap-1">
+          {service.items.map((item) => (
+            <p key={item} className="text-white/50 text-xs py-0.5">• {item}</p>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
 export default function ContactSection({ settings }) {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    subject: '',
-    message: '',
-  });
+  const [formData, setFormData] = useState({ name: '', email: '', subject: '', message: '' });
+  const [selectedService, setSelectedService] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
-  const [bookingInfo, setBookingInfo] = useState({ name: '', email: '', phone: '' });
-  const [isBooking, setIsBooking] = useState(false);
 
-  const {
-    contactEmail,
-    socialInstagramUrl,
-    socialYouTubeUrl,
-    socialTikTokUrl,
-    socialLinkedInUrl,
-  } = settings || {};
+  const { contactEmail, socialInstagramUrl, socialYouTubeUrl, socialTikTokUrl, socialLinkedInUrl } = settings || {};
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
-    
+    const payload = { ...formData, subject: selectedService ? `${selectedService}${formData.subject ? ' — ' + formData.subject : ''}` : formData.subject };
     try {
-      await base44.entities.ContactSubmission.create(formData);
-      
-      // Send SMS alert
+      await base44.entities.ContactSubmission.create(payload);
       base44.functions.invoke('sendSMSAlert', {
         message: `New contact message from ${formData.name} (${formData.email}): ${formData.message.substring(0, 100)}...`,
         alertType: 'message'
       }).catch(err => console.error('SMS alert failed:', err));
-      
       setSubmitted(true);
       setFormData({ name: '', email: '', subject: '', message: '' });
+      setSelectedService('');
     } catch (error) {
       console.error('Failed to submit contact form:', error);
       toast.error('Failed to send message. Please try again.');
     } finally {
       setIsSubmitting(false);
-    }
-  };
-
-  const handleBookPaidCall = async (e) => {
-    e.preventDefault();
-    
-    // Check if running in iframe
-    if (window.self !== window.top) {
-      toast.error('Checkout is only available from the published app, not in preview mode');
-      return;
-    }
-
-    if (!bookingInfo.name || !bookingInfo.email) {
-      toast.error('Please provide your name and email');
-      return;
-    }
-
-    setIsBooking(true);
-
-    try {
-      const { data } = await base44.functions.invoke('createDiscoveryCheckout', {
-        customerName: bookingInfo.name,
-        customerEmail: bookingInfo.email,
-        customerPhone: bookingInfo.phone,
-      });
-
-      if (data.url) {
-        window.location.href = data.url;
-      }
-    } catch (error) {
-      console.error('Booking checkout error:', error);
-      toast.error('Failed to start checkout');
-      setIsBooking(false);
     }
   };
 
@@ -105,7 +111,7 @@ export default function ContactSection({ settings }) {
 
   return (
     <section id="contact" className="py-32 bg-zinc-950">
-      <div className="max-w-5xl mx-auto px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-6 lg:px-8">
         {/* Section Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -113,80 +119,45 @@ export default function ContactSection({ settings }) {
           viewport={{ once: true }}
           className="text-center mb-16"
         >
-          <p className="text-white/40 text-sm font-medium tracking-[0.3em] uppercase mb-4">
-            Get In Touch
+          <p className="text-white/40 text-sm font-medium tracking-[0.3em] uppercase mb-4">Get In Touch</p>
+          <h2 className="text-4xl lg:text-5xl font-bold text-white tracking-tight mb-6">Let's Connect</h2>
+          <p className="text-white/60 text-lg max-w-2xl mx-auto">
+            Need help growing your business, launching a project, or using AI the right way?<br />
+            <span className="text-white font-medium">Message Tab today for a free consultation.</span>
           </p>
-          <h2 className="text-4xl lg:text-5xl font-bold text-white tracking-tight">
-            Let's Connect
-          </h2>
         </motion.div>
 
         <div className="grid lg:grid-cols-2 gap-16">
-          {/* Contact Info */}
+          {/* Left: Services */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            className="space-y-8"
+            className="space-y-6"
           >
+            {/* Core Services */}
             <div>
-              <h3 className="text-2xl font-semibold text-white mb-4">
-                Ready to collaborate?
-              </h3>
-              <p className="text-white/60 leading-relaxed">
-                Whether you're looking for creative direction, AI content production, 
-                or automotive storytelling – I'd love to hear from you.
-              </p>
-            </div>
-
-            {/* Book Paid Discovery Call */}
-            <div className="bg-gradient-to-br from-red-600/20 to-red-800/20 border border-red-500/30 rounded-2xl p-6">
-              <div className="flex items-start gap-3 mb-4">
-                <div className="p-2 bg-red-500/20 rounded-lg">
-                  <CreditCard size={24} className="text-red-400" />
-                </div>
-                <div>
-                  <h4 className="text-lg font-semibold text-white mb-1">Creator Nest Discovery</h4>
-                  <p className="text-white/60 text-sm">30min strategy session - $97</p>
-                </div>
+              <h3 className="text-xl font-bold text-white mb-4">Core Services</h3>
+              <div className="space-y-2">
+                {services.map((s) => (
+                  <ServiceAccordion key={s.title} service={s} />
+                ))}
               </div>
-              <form onSubmit={handleBookPaidCall} className="space-y-3">
-                <Input
-                  placeholder="Your Name *"
-                  value={bookingInfo.name}
-                  onChange={(e) => setBookingInfo({ ...bookingInfo, name: e.target.value })}
-                  required
-                  className="bg-black/50 border-white/20 text-white h-11 rounded-xl"
-                />
-                <Input
-                  type="email"
-                  placeholder="Email Address *"
-                  value={bookingInfo.email}
-                  onChange={(e) => setBookingInfo({ ...bookingInfo, email: e.target.value })}
-                  required
-                  className="bg-black/50 border-white/20 text-white h-11 rounded-xl"
-                />
-                <Input
-                  placeholder="Phone (optional)"
-                  value={bookingInfo.phone}
-                  onChange={(e) => setBookingInfo({ ...bookingInfo, phone: e.target.value })}
-                  className="bg-black/50 border-white/20 text-white h-11 rounded-xl"
-                />
-                <Button
-                  type="submit"
-                  disabled={isBooking}
-                  className="w-full bg-red-600 hover:bg-red-700 text-white h-11 rounded-xl font-semibold"
-                >
-                  {isBooking ? 'Processing...' : 'Pay $97 → Book 30min Call'}
-                </Button>
-              </form>
             </div>
 
+            {/* Why Choose */}
+            <div className="bg-white/5 border border-white/10 rounded-2xl p-6">
+              <h4 className="text-white font-semibold mb-3 text-sm tracking-wide uppercase">Why Businesses Choose Tab</h4>
+              <div className="grid grid-cols-2 gap-1.5">
+                {whyChoose.map((reason) => (
+                  <p key={reason} className="text-white/60 text-sm">✓ {reason}</p>
+                ))}
+              </div>
+            </div>
+
+            {/* Email & Social */}
             {contactEmail && (
-              <a
-                href={`mailto:${contactEmail}`}
-                className="flex items-center gap-4 text-white hover:text-white/80 transition-colors group"
-              >
+              <a href={`mailto:${contactEmail}`} className="flex items-center gap-4 text-white hover:text-white/80 transition-colors group">
                 <div className="p-4 bg-white/5 rounded-xl group-hover:bg-white/10 transition-colors">
                   <Mail size={24} />
                 </div>
@@ -196,21 +167,13 @@ export default function ContactSection({ settings }) {
                 </div>
               </a>
             )}
-
-            {/* Social Links */}
             {socialLinks.length > 0 && (
-              <div className="pt-6">
-                <p className="text-sm text-white/40 mb-4">Follow me</p>
+              <div>
+                <p className="text-sm text-white/40 mb-3">Follow me</p>
                 <div className="flex gap-3">
                   {socialLinks.map((social) => (
-                    <a
-                      key={social.label}
-                      href={social.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="p-4 bg-white/5 rounded-xl text-white/60 hover:text-white hover:bg-white/10 transition-all"
-                      aria-label={social.label}
-                    >
+                    <a key={social.label} href={social.url} target="_blank" rel="noopener noreferrer"
+                      className="p-4 bg-white/5 rounded-xl text-white/60 hover:text-white hover:bg-white/10 transition-all" aria-label={social.label}>
                       <social.icon size={24} />
                     </a>
                   ))}
@@ -219,7 +182,7 @@ export default function ContactSection({ settings }) {
             )}
           </motion.div>
 
-          {/* Contact Form */}
+          {/* Right: Contact Form */}
           <motion.div
             initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -232,66 +195,64 @@ export default function ContactSection({ settings }) {
                     <Send size={28} className="text-emerald-400" />
                   </div>
                   <h4 className="text-xl font-semibold text-white mb-2">Message Sent!</h4>
-                  <p className="text-white/60">Thanks for reaching out. I'll get back to you soon.</p>
-                  <Button
-                    variant="outline"
-                    onClick={() => setSubmitted(false)}
-                    className="mt-6 border-white/20 text-white hover:bg-white/5 rounded-full"
-                  >
+                  <p className="text-white/60">Thanks for reaching out. Tab will get back to you soon.</p>
+                  <Button variant="outline" onClick={() => setSubmitted(false)} className="mt-6 border-white/20 text-white hover:bg-white/5 rounded-full">
                     Send Another
                   </Button>
                 </div>
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-6">
+                {/* Quick Service Selector */}
+                <div>
+                  <label className="block text-sm text-white/60 mb-3">What do you need help with?</label>
+                  <div className="flex flex-wrap gap-2">
+                    {quickOptions.map((option) => (
+                      <button
+                        key={option}
+                        type="button"
+                        onClick={() => setSelectedService(selectedService === option ? '' : option)}
+                        className={`px-4 py-2 rounded-full text-sm font-medium border transition-all ${
+                          selectedService === option
+                            ? 'bg-white text-black border-white'
+                            : 'bg-white/5 text-white/60 border-white/10 hover:border-white/30 hover:text-white'
+                        }`}
+                      >
+                        {option}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
                 <div className="grid sm:grid-cols-2 gap-6">
                   <div>
                     <label className="block text-sm text-white/60 mb-2">Name</label>
-                    <Input
-                      required
-                      value={formData.name}
-                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                      className="bg-zinc-900 border-white/10 text-white placeholder:text-white/30 focus:border-white/30 h-12 rounded-xl"
-                      placeholder="Your name"
-                    />
+                    <Input required value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                      className="bg-zinc-900 border-white/10 text-white placeholder:text-white/30 focus:border-white/30 h-12 rounded-xl" placeholder="Your name" />
                   </div>
                   <div>
                     <label className="block text-sm text-white/60 mb-2">Email</label>
-                    <Input
-                      required
-                      type="email"
-                      value={formData.email}
-                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                      className="bg-zinc-900 border-white/10 text-white placeholder:text-white/30 focus:border-white/30 h-12 rounded-xl"
-                      placeholder="your@email.com"
-                    />
+                    <Input required type="email" value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                      className="bg-zinc-900 border-white/10 text-white placeholder:text-white/30 focus:border-white/30 h-12 rounded-xl" placeholder="your@email.com" />
                   </div>
                 </div>
+
                 <div>
-                  <label className="block text-sm text-white/60 mb-2">Subject</label>
-                  <Input
-                    value={formData.subject}
-                    onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
-                    className="bg-zinc-900 border-white/10 text-white placeholder:text-white/30 focus:border-white/30 h-12 rounded-xl"
-                    placeholder="What's this about?"
-                  />
+                  <label className="block text-sm text-white/60 mb-2">Subject <span className="text-white/30">(optional)</span></label>
+                  <Input value={formData.subject} onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
+                    className="bg-zinc-900 border-white/10 text-white placeholder:text-white/30 focus:border-white/30 h-12 rounded-xl" placeholder="Add more detail..." />
                 </div>
+
                 <div>
                   <label className="block text-sm text-white/60 mb-2">Message</label>
-                  <Textarea
-                    required
-                    value={formData.message}
-                    onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                    className="bg-zinc-900 border-white/10 text-white placeholder:text-white/30 focus:border-white/30 min-h-[150px] rounded-xl resize-none"
-                    placeholder="Tell me about your project..."
-                  />
+                  <Textarea required value={formData.message} onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                    className="bg-zinc-900 border-white/10 text-white placeholder:text-white/30 focus:border-white/30 min-h-[140px] rounded-xl resize-none"
+                    placeholder="Tell me about your project or what you're trying to accomplish..." />
                 </div>
-                <Button
-                  type="submit"
-                  disabled={isSubmitting}
-                  className="w-full bg-white text-black hover:bg-white/90 h-12 rounded-xl font-semibold tracking-wide"
-                >
-                  {isSubmitting ? 'Sending...' : 'Send Message'}
+
+                <Button type="submit" disabled={isSubmitting}
+                  className="w-full bg-white text-black hover:bg-white/90 h-12 rounded-xl font-semibold tracking-wide">
+                  {isSubmitting ? 'Sending...' : 'Send Message — Free Consultation'}
                 </Button>
               </form>
             )}
