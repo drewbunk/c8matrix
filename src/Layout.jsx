@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { base44 } from '@/api/base44Client';
 import BackgroundMusicPlayer from '@/components/BackgroundMusicPlayer';
+import MatrixRain from '@/components/MatrixRain';
 
 export default function Layout({ children, currentPageName }) {
   useEffect(() => {
@@ -55,6 +56,7 @@ export default function Layout({ children, currentPageName }) {
           color: #fff;
         }
       `}</style>
+      <MatrixRain />
       {children}
       <BackgroundMusicPlayer 
         musicUrl={siteSettings.backgroundMusicUrl} 
