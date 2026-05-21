@@ -1,0 +1,73 @@
+{
+  "name": "Client",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Client name"
+    },
+    "email": {
+      "type": "string",
+      "description": "Client email"
+    },
+    "phone": {
+      "type": "string",
+      "description": "Client phone"
+    },
+    "stripePaymentId": {
+      "type": "string",
+      "description": "Stripe payment/session ID"
+    },
+    "meetingDateTime": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Scheduled meeting time"
+    },
+    "googleCalendarEventId": {
+      "type": "string",
+      "description": "Google Calendar event ID"
+    },
+    "amountPaid": {
+      "type": "number",
+      "description": "Amount paid in cents"
+    },
+    "notes": {
+      "type": "string",
+      "description": "Additional notes"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "payment_completed",
+        "meeting_scheduled",
+        "completed",
+        "cancelled"
+      ],
+      "default": "payment_completed",
+      "description": "Client booking status"
+    }
+  },
+  "required": [
+    "name",
+    "email",
+    "stripePaymentId"
+  ],
+  "rls": {
+    "create": {},
+    "read": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}
