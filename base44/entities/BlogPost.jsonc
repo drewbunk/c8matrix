@@ -1,0 +1,82 @@
+{
+  "name": "BlogPost",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string",
+      "description": "Blog post title"
+    },
+    "slug": {
+      "type": "string",
+      "description": "URL-friendly slug"
+    },
+    "content": {
+      "type": "string",
+      "description": "Blog post content (markdown/HTML)"
+    },
+    "excerpt": {
+      "type": "string",
+      "description": "Short excerpt for previews"
+    },
+    "metaDescription": {
+      "type": "string",
+      "description": "SEO meta description"
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Blog post tags"
+    },
+    "featuredImageUrl": {
+      "type": "string",
+      "description": "Featured image URL"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "draft",
+        "published",
+        "archived"
+      ],
+      "default": "draft",
+      "description": "Post status"
+    },
+    "publishedDate": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Publication date"
+    },
+    "author": {
+      "type": "string",
+      "description": "Author name"
+    },
+    "readTimeMinutes": {
+      "type": "number",
+      "description": "Estimated read time"
+    }
+  },
+  "required": [
+    "title",
+    "content"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "read": {},
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}
