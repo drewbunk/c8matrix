@@ -43,7 +43,7 @@ export default function Home() {
     <div className="min-h-screen bg-black text-white">
       <Navigation brandName={siteSettings.brandName} />
       
-      <HeroSection settings={siteSettings} featuredContent={featuredContent || []} projects={projects || []} />
+      <HeroSection settings={siteSettings} projects={projects || []} />
       
       <VideoReelSection settings={siteSettings} />
       
