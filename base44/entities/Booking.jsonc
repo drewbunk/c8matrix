@@ -1,0 +1,84 @@
+{
+  "name": "Booking",
+  "type": "object",
+  "properties": {
+    "clientName": {
+      "type": "string",
+      "description": "Name of the client"
+    },
+    "clientEmail": {
+      "type": "string",
+      "description": "Client's email address"
+    },
+    "clientPhone": {
+      "type": "string",
+      "description": "Client's phone number"
+    },
+    "serviceType": {
+      "type": "string",
+      "description": "Type of service requested"
+    },
+    "startDateTime": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Booking start date and time"
+    },
+    "endDateTime": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Booking end date and time"
+    },
+    "notes": {
+      "type": "string",
+      "description": "Additional notes or details"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "confirmed",
+        "cancelled",
+        "completed"
+      ],
+      "default": "pending",
+      "description": "Booking status"
+    },
+    "googleCalendarEventId": {
+      "type": "string",
+      "description": "Google Calendar event ID for syncing"
+    },
+    "stripeSessionId": {
+      "type": "string",
+      "description": "Stripe checkout session ID"
+    },
+    "isPaid": {
+      "type": "boolean",
+      "default": false,
+      "description": "Payment status"
+    }
+  },
+  "required": [
+    "clientName",
+    "clientEmail",
+    "startDateTime",
+    "endDateTime"
+  ],
+  "rls": {
+    "create": {},
+    "read": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}
