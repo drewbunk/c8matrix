@@ -17,128 +17,90 @@ function getVimeoId(url) {
   return match ? match[1] : null;
 }
 
-export default function HeroSection({ settings }) {
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [isMuted, setIsMuted] = useState(true);
-  const videoRef = useRef(null);
+export default function HeroSection({ settings, featuredContent, projects }) {
+   const {
+     brandName = 'C8Matrix',
+     tagline = 'AI Creative • Automotive Storyteller • App Builder',
+     secondaryCTAText = 'Contact',
+     secondaryCTALink = '#contact',
+   } = settings || {};
 
-  const {
-    brandName = 'C8Matrix',
-    tagline = 'AI Creative • Automotive Storyteller • App Builder',
-    heroVideoType = 'youtube',
-    heroVideoUrl = '',
-    heroPosterImageUrl,
-    primaryCTAText = 'View Resume',
-    primaryCTALink = '#resume',
-    secondaryCTAText = 'Contact',
-    secondaryCTALink = '#contact',
-  } = settings || {};
+   const scrollToSection = (href) => {
+     const id = href.replace('#', '');
+     const el = document.getElementById(id);
+     if (el) el.scrollIntoView({ behavior: 'smooth' });
+   };
 
-  const scrollToSection = (href) => {
-    const id = href.replace('#', '');
-    const el = document.getElementById(id);
-    if (el) el.scrollIntoView({ behavior: 'smooth' });
-  };
+   // Combine featured content and projects for the grid
+   const items = [
+     ...((featuredContent || []).map(item => ({ ...item, type: 'featured' })).slice(0, 3)),
+     ...((projects || []).filter(p => p.isFeatured).slice(0, 3))
+   ];
 
-  const renderVideo = () => {
-    if (heroVideoType === 'youtube' && heroVideoUrl) {
-      const videoId = getYouTubeId(heroVideoUrl);
-      if (videoId) {
-        return (
-          <iframe
-            src={`https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&loop=1&playlist=${videoId}&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1`}
-            className="absolute inset-0 w-full h-full object-cover scale-150"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
-            title="Hero Video"
-          />
-        );
-      }
-    }
-    
-    if (heroVideoType === 'vimeo' && heroVideoUrl) {
-      const videoId = getVimeoId(heroVideoUrl);
-      if (videoId) {
-        return (
-          <iframe
-            src={`https://player.vimeo.com/video/${videoId}?autoplay=1&muted=1&loop=1&background=1`}
-            className="absolute inset-0 w-full h-full object-cover scale-150"
-            allow="autoplay; fullscreen"
-            allowFullScreen
-            title="Hero Video"
-          />
-        );
-      }
-    }
-    
-    if (heroVideoType === 'mp4_url' && heroVideoUrl) {
-      return (
-        <video
-          ref={videoRef}
-          autoPlay
-          loop
-          muted={isMuted}
-          playsInline
-          className="absolute inset-0 w-full h-full object-cover"
-          poster={heroPosterImageUrl}
-        >
-          <source src={heroVideoUrl} type="video/mp4" />
-        </video>
-      );
-    }
+   return (
+     <section id="home" className="relative min-h-screen flex flex-col items-center justify-between overflow-hidden bg-black py-20 px-4">
+       {/* Content */}
+       <div className="relative z-10 text-center flex-1 flex flex-col justify-center">
+         <motion.div
+           initial={{ opacity: 0, y: 20 }}
+           animate={{ opacity: 1, y: 0 }}
+           transition={{ duration: 0.8 }}
+         >
+           <h1 className="text-5xl md:text-7xl font-bold text-white mb-4 tracking-tight">
+             {brandName}
+           </h1>
+           <p className="text-lg md:text-xl text-gray-300 mb-8">
+             {tagline}
+           </p>
+         </motion.div>
 
-    // Fallback gradient background
-    return (
-      <div className="absolute inset-0 bg-gradient-to-br from-zinc-900 via-black to-zinc-800" />
-    );
-  };
+         {/* Featured Items Grid */}
+         <motion.div
+           initial={{ opacity: 0, y: 40 }}
+           animate={{ opacity: 1, y: 0 }}
+           transition={{ duration: 0.8, delay: 0.2 }}
+           className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-12 max-w-5xl mx-auto"
+         >
+           {items.map((item, idx) => (
+             <motion.div
+               key={idx}
+               whileHover={{ scale: 1.05 }}
+               className="group relative h-48 rounded-lg overflow-hidden bg-gradient-to-br from-zinc-800 to-black border border-zinc-700 hover:border-cyan-500/50 transition-all duration-300 cursor-pointer"
+             >
+               {item.thumbnailUrl || item.imageUrl ? (
+                 <img
+                   src={item.thumbnailUrl || item.imageUrl}
+                   alt={item.title || item.name}
+                   className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300 opacity-70 group-hover:opacity-90"
+                 />
+               ) : (
+                 <div className="w-full h-full bg-gradient-to-br from-cyan-500/20 to-blue-500/20" />
+               )}
+               <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
+                 <div>
+                   <h3 className="text-white font-semibold text-sm md:text-base">{item.title || item.name}</h3>
+                   {item.shortDescription && <p className="text-gray-300 text-xs mt-1">{item.shortDescription}</p>}
+                 </div>
+               </div>
+             </motion.div>
+           ))}
+         </motion.div>
 
-  return (
-    <section id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Video Background */}
-      <div className="absolute inset-0">
-        <video
-          autoPlay
-          muted
-          playsInline
-          className="absolute inset-0 w-full h-full object-cover"
-        >
-          <source src="https://d8j0ntlcm91z4.cloudfront.net/user_37d211oH6Kq5XZ6sJ8QglkOOPRj/hf_20260116_014728_12249bc1-f006-4ac9-a9fc-b05e6707846b.mp4" type="video/mp4" />
-        </video>
-      </div>
-
-      {/* Content */}
-      <div className="absolute bottom-24 left-0 right-0 z-10 flex justify-center">
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Link to={createPageUrl('Portfolio')}>
-              <Button
-                className="bg-white text-black hover:bg-white/90 px-8 py-6 text-base font-semibold tracking-wide rounded-full transition-all duration-300 hover:scale-105"
-              >
-                Portfolio
-              </Button>
-            </Link>
-            <Button
-              onClick={() => scrollToSection(secondaryCTALink)}
-              variant="outline"
-              className="border-white/30 text-white hover:bg-white/10 px-8 py-6 text-base font-medium tracking-wide rounded-full transition-all duration-300"
-            >
-              {secondaryCTAText}
-            </Button>
-        </div>
-      </div>
-
-      {/* Video Controls (for mp4) */}
-      {heroVideoType === 'mp4_url' && heroVideoUrl && (
-        <button
-          onClick={() => {
-            setIsMuted(!isMuted);
-            if (videoRef.current) videoRef.current.muted = !isMuted;
-          }}
-          className="absolute bottom-10 right-10 p-3 bg-white/10 backdrop-blur-sm rounded-full text-white hover:bg-white/20 transition-colors"
-        >
-          {isMuted ? <VolumeX size={20} /> : <Volume2 size={20} />}
-        </button>
-      )}
-    </section>
-  );
-}
+         {/* CTA */}
+         <motion.div
+           initial={{ opacity: 0 }}
+           animate={{ opacity: 1 }}
+           transition={{ duration: 0.8, delay: 0.4 }}
+           className="mt-12"
+         >
+           <Button
+             onClick={() => scrollToSection(secondaryCTALink)}
+             className="bg-cyan-500 hover:bg-cyan-600 text-black px-8 py-3 font-semibold rounded-full transition-all duration-300 hover:scale-105"
+           >
+             {secondaryCTAText}
+           </Button>
+         </motion.div>
+       </div>
+     </section>
+   );
+ }
