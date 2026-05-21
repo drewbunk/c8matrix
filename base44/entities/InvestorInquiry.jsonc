@@ -1,0 +1,54 @@
+{
+  "name": "InvestorInquiry",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Investor's name"
+    },
+    "email": {
+      "type": "string",
+      "description": "Investor's email"
+    },
+    "company": {
+      "type": "string",
+      "description": "Company or fund name"
+    },
+    "investmentFocus": {
+      "type": "string",
+      "description": "Area of investment interest"
+    },
+    "message": {
+      "type": "string",
+      "description": "Inquiry message"
+    },
+    "isRead": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether inquiry has been reviewed"
+    }
+  },
+  "required": [
+    "name",
+    "email",
+    "message"
+  ],
+  "rls": {
+    "create": {},
+    "read": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}
