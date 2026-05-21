@@ -1,0 +1,150 @@
+{
+  "name": "SiteSettings",
+  "type": "object",
+  "properties": {
+    "brandName": {
+      "type": "string",
+      "default": "C8Matrix"
+    },
+    "fullName": {
+      "type": "string",
+      "default": "Drew Bunkley"
+    },
+    "tagline": {
+      "type": "string",
+      "default": "AI Creative \u2022 Automotive Storyteller \u2022 App Builder"
+    },
+    "aboutText": {
+      "type": "string",
+      "description": "About section bio text"
+    },
+    "heroVideoType": {
+      "type": "string",
+      "enum": [
+        "youtube",
+        "vimeo",
+        "mp4_url"
+      ],
+      "default": "youtube"
+    },
+    "heroVideoUrl": {
+      "type": "string",
+      "description": "URL for the hero video"
+    },
+    "heroPosterImageUrl": {
+      "type": "string",
+      "description": "Optional poster image for video"
+    },
+    "headshotImageUrl": {
+      "type": "string",
+      "description": "Profile/headshot image URL"
+    },
+    "primaryCTAText": {
+      "type": "string",
+      "default": "View Resume"
+    },
+    "primaryCTALink": {
+      "type": "string",
+      "default": "#resume"
+    },
+    "secondaryCTAText": {
+      "type": "string",
+      "default": "Contact"
+    },
+    "secondaryCTALink": {
+      "type": "string",
+      "default": "#contact"
+    },
+    "resumePdfUrl": {
+      "type": "string",
+      "description": "URL to downloadable resume PDF"
+    },
+    "stats": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "string"
+          },
+          "label": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "socialInstagramUrl": {
+      "type": "string"
+    },
+    "socialYouTubeUrl": {
+      "type": "string"
+    },
+    "socialTikTokUrl": {
+      "type": "string"
+    },
+    "socialLinkedInUrl": {
+      "type": "string"
+    },
+    "contactEmail": {
+      "type": "string"
+    },
+    "backgroundMusicUrl": {
+      "type": "string",
+      "description": "URL to background music MP3"
+    },
+    "backgroundMusicEnabled": {
+      "type": "boolean",
+      "default": false,
+      "description": "Enable background music on site"
+    },
+    "adminLoginName": {
+      "type": "string",
+      "default": "lamont770@gmail.com",
+      "description": "Admin login username/email"
+    },
+    "adminPassword": {
+      "type": "string",
+      "default": "c8matrix2024",
+      "description": "Admin dashboard password"
+    },
+    "alertPhoneNumber": {
+      "type": "string",
+      "description": "Phone number for SMS alerts (e.g., +15551234567)"
+    },
+    "alertOnMessages": {
+      "type": "boolean",
+      "default": false,
+      "description": "Send SMS alert for new contact messages"
+    },
+    "alertOnPayments": {
+      "type": "boolean",
+      "default": false,
+      "description": "Send SMS alert for successful payments"
+    }
+  },
+  "required": [
+    "brandName"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "read": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}
