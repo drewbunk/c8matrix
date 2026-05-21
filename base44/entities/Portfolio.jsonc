@@ -1,0 +1,64 @@
+{
+  "name": "Portfolio",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string",
+      "description": "Title of the portfolio item"
+    },
+    "description": {
+      "type": "string",
+      "description": "Description of the portfolio item"
+    },
+    "fileUrl": {
+      "type": "string",
+      "description": "URL of the file OR YouTube video ID (e.g., dQw4w9WgXcQ)"
+    },
+    "fileType": {
+      "type": "string",
+      "enum": [
+        "pdf",
+        "image",
+        "video",
+        "youtube",
+        "document"
+      ],
+      "description": "Type of file"
+    },
+    "thumbnailUrl": {
+      "type": "string",
+      "description": "Thumbnail image URL (auto-generated for YouTube)"
+    },
+    "category": {
+      "type": "string",
+      "description": "Category/tag for organization"
+    },
+    "sortOrder": {
+      "type": "number",
+      "default": 0
+    }
+  },
+  "required": [
+    "title",
+    "fileUrl",
+    "fileType"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "read": {},
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}
