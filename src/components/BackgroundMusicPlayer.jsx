@@ -6,31 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 export default function BackgroundMusicPlayer({ musicUrl, enabled }) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
-  const [hasInteracted, setHasInteracted] = useState(false);
   const audioRef = useRef(null);
-
-  useEffect(() => {
-    if (!audioRef.current || !musicUrl || !enabled) return;
-
-    // Auto-play only works after user interaction
-    const handleFirstInteraction = () => {
-      if (!hasInteracted) {
-        setHasInteracted(true);
-        audioRef.current?.play().catch(() => {
-          // Autoplay blocked - user will need to click play button
-        });
-      }
-    };
-
-    // Listen for any user interaction
-    document.addEventListener('click', handleFirstInteraction, { once: true });
-    document.addEventListener('keydown', handleFirstInteraction, { once: true });
-
-    return () => {
-      document.removeEventListener('click', handleFirstInteraction);
-      document.removeEventListener('keydown', handleFirstInteraction);
-    };
-  }, [musicUrl, enabled, hasInteracted]);
 
   useEffect(() => {
     if (!audioRef.current) return;
