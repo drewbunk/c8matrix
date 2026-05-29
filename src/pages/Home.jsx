@@ -13,6 +13,7 @@ import ShopSection from '@/components/home/ShopSection';
 import ContactSection from '@/components/home/ContactSection';
 import Footer from '@/components/home/Footer';
 import ChatWidget from '@/components/ChatWidget';
+import SocialStatsBar from '@/components/SocialStatsBar';
 
 export default function Home() {
   // Fetch all data
@@ -54,6 +55,8 @@ export default function Home() {
       <PortfolioSection projects={projects || []} />
 
       <ShopSection products={products || []} />
+
+      <SocialStatsBar />
 
       <ContactSection settings={siteSettings} />
       

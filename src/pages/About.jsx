@@ -7,6 +7,7 @@ import { ArrowLeft, ChevronDown, Briefcase, MapPin, Download } from 'lucide-reac
 import { Button } from '@/components/ui/button';
 import { motion, AnimatePresence } from 'framer-motion';
 import Footer from '@/components/home/Footer';
+import SocialStatsBar from '@/components/SocialStatsBar';
 
 export default function About() {
   const [resumeOpen, setResumeOpen] = useState(false);
@@ -136,6 +137,8 @@ export default function About() {
                 {siteSettings.aboutText || 'About text coming soon...'}
               </p>
             </motion.div>
+
+            <SocialStatsBar />
 
             {siteSettings.stats?.length > 0 && (
               <motion.div
