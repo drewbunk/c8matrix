@@ -56,6 +56,14 @@ export default function Home() {
 
       <ShopSection products={products || []} />
 
+      <div className="py-12 px-6 bg-black/50 border-y border-white/10">
+        <div className="max-w-5xl mx-auto text-center">
+          <p className="text-white/40 text-sm font-mono tracking-widest uppercase mb-2">Community</p>
+          <h2 className="text-5xl md:text-6xl font-black text-white mb-2">66K+</h2>
+          <p className="text-white/60">Across all social platforms</p>
+        </div>
+      </div>
+
       <SocialStatsBar />
 
       <ContactSection settings={siteSettings} />
