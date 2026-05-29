@@ -102,7 +102,7 @@ export default function TermsOfService() {
             <h2 className="text-xl font-bold text-white mb-3">11. Contact</h2>
             <p>
               For questions about these Terms, please contact:<br />
-              <a href="mailto:drewbunkley@gmail.com" className="text-white underline hover:text-white/70">drewbunkley@gmail.com</a>
+              <a href="mailto:drew@TreadAndTorque.com" className="text-white underline hover:text-white/70">drew@TreadAndTorque.com</a>
             </p>
           </section>
         </div>

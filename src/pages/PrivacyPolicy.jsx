@@ -73,7 +73,7 @@ export default function PrivacyPolicy() {
               <li>Opt out of marketing communications</li>
               <li>Lodge a complaint with a data protection authority</li>
             </ul>
-            <p className="mt-3">To exercise these rights, contact us at <a href="mailto:drewbunkley@gmail.com" className="text-white underline hover:text-white/70">drewbunkley@gmail.com</a>.</p>
+            <p className="mt-3">To exercise these rights, contact us at <a href="mailto:drew@TreadAndTorque.com" className="text-white underline hover:text-white/70">drew@TreadAndTorque.com</a>.</p>
           </section>
 
           <section>
@@ -94,7 +94,7 @@ export default function PrivacyPolicy() {
             <h2 className="text-xl font-bold text-white mb-3">10. Contact Us</h2>
             <p>
               If you have any questions about this Privacy Policy, please contact us at:<br />
-              <a href="mailto:drewbunkley@gmail.com" className="text-white underline hover:text-white/70">drewbunkley@gmail.com</a>
+              <a href="mailto:drew@TreadAndTorque.com" className="text-white underline hover:text-white/70">drew@TreadAndTorque.com</a>
             </p>
           </section>
         </div>
