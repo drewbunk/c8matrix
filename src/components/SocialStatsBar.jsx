@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 const stats = [
   {
     platform: 'Instagram',
-    handle: '@drewbunkley',
+    handle: '@c8matrix',
     count: '52.3K',
     icon: (
       <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
@@ -14,11 +14,11 @@ const stats = [
     color: 'text-pink-400',
     borderColor: 'border-pink-400/30',
     bgColor: 'bg-pink-400/10',
-    url: 'https://instagram.com/drewbunkley',
+    url: 'https://instagram.com/c8matrix',
   },
   {
     platform: 'TikTok',
-    handle: '@drewbunkley',
+    handle: '@c8matrix',
     count: '10.2K',
     icon: (
       <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
@@ -28,11 +28,11 @@ const stats = [
     color: 'text-cyan-400',
     borderColor: 'border-cyan-400/30',
     bgColor: 'bg-cyan-400/10',
-    url: 'https://tiktok.com/@drewbunkley',
+    url: 'https://tiktok.com/@c8matrix',
   },
   {
     platform: 'YouTube',
-    handle: '@drewbunkley',
+    handle: '@c8matrix',
     count: '4K',
     icon: (
       <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
@@ -42,7 +42,7 @@ const stats = [
     color: 'text-red-400',
     borderColor: 'border-red-400/30',
     bgColor: 'bg-red-400/10',
-    url: 'https://youtube.com/@drewbunkley',
+    url: 'https://youtube.com/@c8matrix',
   },
 ];
 
