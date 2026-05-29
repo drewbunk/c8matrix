@@ -21,9 +21,10 @@
         "image",
         "video",
         "youtube",
-        "document"
+        "document",
+        "reel"
       ],
-      "description": "Type of file"
+      "description": "Type of file. Use 'reel' for 9x16 vertical videos (Instagram/TikTok style)"
     },
     "thumbnailUrl": {
       "type": "string",
@@ -42,23 +43,5 @@
     "title",
     "fileUrl",
     "fileType"
-  ],
-  "rls": {
-    "create": {
-      "user_condition": {
-        "role": "admin"
-      }
-    },
-    "read": {},
-    "update": {
-      "user_condition": {
-        "role": "admin"
-      }
-    },
-    "delete": {
-      "user_condition": {
-        "role": "admin"
-      }
-    }
-  }
+  ]
 }

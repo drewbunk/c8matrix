@@ -7,6 +7,7 @@ import { ArrowLeft, Download, FileText, Image as ImageIcon, Video, File, Filter,
 import { Button } from '@/components/ui/button';
 import { motion } from 'framer-motion';
 import Footer from '@/components/home/Footer';
+import ReelsSection from '@/components/portfolio/ReelsSection';
 
 const typeColors = {
   App: 'bg-blue-500/10 text-blue-400',
@@ -37,14 +38,16 @@ export default function Portfolio() {
 
   const siteSettings = settings?.[0] || {};
   const sortedItems = [...(portfolioItems || [])].sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0));
+  const reels = sortedItems.filter(item => item.fileType === 'reel');
+  const nonReelItems = sortedItems.filter(item => item.fileType !== 'reel');
 
   // Get unique categories
-  const categories = ['all', ...new Set(sortedItems.map(item => item.category).filter(Boolean))];
+  const categories = ['all', ...new Set(nonReelItems.map(item => item.category).filter(Boolean))];
 
-  // Filter items
+  // Filter items (exclude reels from main grid)
   const filteredItems = selectedCategory === 'all' 
-    ? sortedItems 
-    : sortedItems.filter(item => item.category === selectedCategory);
+    ? nonReelItems 
+    : nonReelItems.filter(item => item.category === selectedCategory);
 
   const getFileIcon = (fileType) => {
     switch (fileType) {
@@ -300,6 +303,9 @@ export default function Portfolio() {
             </div>
           </section>
         )}
+
+        {/* Reels Section */}
+        <ReelsSection reels={reels} />
 
         {/* Category Filter */}
         {categories.length > 1 && (
