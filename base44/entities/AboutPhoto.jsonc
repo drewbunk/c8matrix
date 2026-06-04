@@ -1,0 +1,17 @@
+{
+  "name": "AboutPhoto",
+  "type": "object",
+  "properties": {
+    "imageUrl": {
+      "type": "string",
+      "description": "URL of the cinematic photo"
+    },
+    "sortOrder": {
+      "type": "number",
+      "default": 0
+    }
+  },
+  "required": [
+    "imageUrl"
+  ]
+}

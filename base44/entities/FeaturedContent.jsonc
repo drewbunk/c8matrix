@@ -1,0 +1,45 @@
+{
+  "name": "FeaturedContent",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string",
+      "description": "Title of the featured content"
+    },
+    "description": {
+      "type": "string",
+      "description": "Long description"
+    },
+    "videoType": {
+      "type": "string",
+      "enum": [
+        "youtube",
+        "vimeo",
+        "mp4_url"
+      ]
+    },
+    "videoUrl": {
+      "type": "string"
+    },
+    "thumbnailUrl": {
+      "type": "string"
+    },
+    "highlightBullets": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "isPinned": {
+      "type": "boolean",
+      "default": false
+    },
+    "sortOrder": {
+      "type": "number",
+      "default": 0
+    }
+  },
+  "required": [
+    "title"
+  ]
+}

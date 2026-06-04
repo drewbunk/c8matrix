@@ -1,0 +1,23 @@
+{
+  "name": "Testimonial",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "quote": {
+      "type": "string"
+    },
+    "titleOrContext": {
+      "type": "string"
+    },
+    "sortOrder": {
+      "type": "number",
+      "default": 0
+    }
+  },
+  "required": [
+    "name",
+    "quote"
+  ]
+}

@@ -1,0 +1,66 @@
+{
+  "name": "Project",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "App",
+        "Service",
+        "Content",
+        "Partnership"
+      ]
+    },
+    "shortDescription": {
+      "type": "string"
+    },
+    "longDescription": {
+      "type": "string"
+    },
+    "thumbnailImageUrl": {
+      "type": "string"
+    },
+    "linkUrl": {
+      "type": "string"
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "isFeatured": {
+      "type": "boolean",
+      "default": false
+    },
+    "sortOrder": {
+      "type": "number",
+      "default": 0
+    }
+  },
+  "required": [
+    "name",
+    "type"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "read": {},
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "name": "Experience",
+  "type": "object",
+  "properties": {
+    "companyOrBrand": {
+      "type": "string"
+    },
+    "roleTitle": {
+      "type": "string"
+    },
+    "startDate": {
+      "type": "string"
+    },
+    "endDate": {
+      "type": "string"
+    },
+    "location": {
+      "type": "string"
+    },
+    "bullets": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "sortOrder": {
+      "type": "number",
+      "default": 0
+    }
+  },
+  "required": [
+    "companyOrBrand",
+    "roleTitle"
+  ]
+}
