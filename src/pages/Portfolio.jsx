@@ -238,6 +238,9 @@ export default function Portfolio() {
           </div>
         </section>
 
+        {/* Reels Section — main focus */}
+        <ReelsSection reels={reels} />
+
         {/* Projects Section */}
         {sortedProjects.length > 0 && (
           <section className="py-16 px-6 lg:px-8 bg-black border-b border-white/5">
@@ -303,9 +306,6 @@ export default function Portfolio() {
             </div>
           </section>
         )}
-
-        {/* Reels Section */}
-        <ReelsSection reels={reels} />
 
         {/* Category Filter */}
         {categories.length > 1 && (
