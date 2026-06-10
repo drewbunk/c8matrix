@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { motion } from 'framer-motion';
-import { ArrowRight, ExternalLink, ChevronLeft, ChevronRight } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { ArrowRight, ExternalLink, ChevronLeft, ChevronRight, Play, X } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import DigitalLightOverlay from '@/components/DigitalLightOverlay';
 
@@ -114,7 +114,90 @@ function ProjectCarousel({ items, label, color }) {
   );
 }
 
-export default function HeroSection({ settings, featuredContent, projects }) {
+function MiniReelStrip({ reels }) {
+  const [activeReel, setActiveReel] = useState(null);
+  const preview = (reels || []).slice(0, 4);
+  if (!preview.length) return null;
+
+  return (
+    <>
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.7, delay: 0.35 }}
+        className="w-full mb-6"
+      >
+        <div className="flex items-center justify-between mb-3 px-1">
+          <span className="text-xs tracking-[0.3em] text-white/40 font-mono uppercase">Short Form</span>
+          <Link to="/Portfolio" className="text-xs font-mono text-emerald-400 hover:text-emerald-300 transition-colors flex items-center gap-1">
+            View All <ArrowRight className="w-3 h-3" />
+          </Link>
+        </div>
+        <div className="grid grid-cols-4 gap-2">
+          {preview.map((reel, i) => (
+            <motion.div
+              key={reel.id}
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4 + i * 0.07 }}
+              className="group cursor-pointer relative overflow-hidden rounded-xl"
+              style={{ aspectRatio: '9/16', background: '#0a0a0a', border: '1px solid rgba(255,255,255,0.08)' }}
+              onClick={() => setActiveReel(reel)}
+              onMouseEnter={e => { e.currentTarget.style.borderColor = 'rgba(0,255,160,0.4)'; }}
+              onMouseLeave={e => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.08)'; }}
+            >
+              {reel.thumbnailUrl ? (
+                <img src={reel.thumbnailUrl} alt={reel.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+              ) : (
+                <video src={reel.fileUrl} className="w-full h-full object-cover" muted playsInline preload="metadata" />
+              )}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent opacity-60 group-hover:opacity-80 transition-opacity" />
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="w-8 h-8 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center border border-white/30 group-hover:bg-white/30 transition-all group-hover:scale-110">
+                  <Play size={12} className="text-white ml-0.5" fill="white" />
+                </div>
+              </div>
+              <p className="absolute bottom-0 left-0 right-0 p-2 text-white text-[10px] font-medium leading-tight line-clamp-2">{reel.title}</p>
+            </motion.div>
+          ))}
+        </div>
+      </motion.div>
+
+      <AnimatePresence>
+        {activeReel && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/95 backdrop-blur-md"
+            onClick={() => setActiveReel(null)}
+          >
+            <button
+              onClick={() => setActiveReel(null)}
+              className="absolute top-6 right-6 w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors z-10"
+            >
+              <X size={20} className="text-white" />
+            </button>
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              className="flex flex-col items-center"
+              onClick={e => e.stopPropagation()}
+            >
+              <div className="rounded-2xl overflow-hidden bg-black" style={{ aspectRatio: '9/16', maxHeight: '80vh', width: 'auto' }}>
+                <video src={activeReel.fileUrl} className="w-full h-full object-contain" controls autoPlay playsInline style={{ maxHeight: '80vh' }} />
+              </div>
+              <p className="text-white font-semibold text-lg mt-4 text-center">{activeReel.title}</p>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
+  );
+}
+
+export default function HeroSection({ settings, featuredContent, projects, reels }) {
   const {
     fullName = 'Drew Bunkley',
     tagline = 'AI Creative • Automotive Storyteller • App Builder',
@@ -171,6 +254,9 @@ export default function HeroSection({ settings, featuredContent, projects }) {
           className="w-32 h-px my-8"
           style={{ background: 'linear-gradient(90deg, transparent, rgba(0,255,160,0.6), transparent)' }}
         />
+
+        {/* Short Form Reels Strip */}
+        <MiniReelStrip reels={reels} />
 
         {/* Carousels */}
         <motion.div
