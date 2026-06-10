@@ -282,11 +282,13 @@ export default function Partnership() {
             <span><span className="text-[#00f2ea]">TT</span> &nbsp;@c8matrix</span>
             <span><span className="text-[#ff0000]">YT</span> &nbsp;C8Matrix</span>
           </motion.div>
-          <motion.a variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={3}
-            href="/#contact"
-            className="inline-flex items-center gap-3 bg-[#00e676] text-black font-black px-10 py-4 rounded-full text-lg hover:bg-white transition-colors">
-            Start a Partnership <ArrowRight className="w-5 h-5" />
-          </motion.a>
+          <motion.div variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={3}>
+            <Link
+              to="/#contact"
+              className="inline-flex items-center gap-3 bg-[#00e676] text-black font-black px-10 py-4 rounded-full text-lg hover:bg-white transition-colors">
+              Start a Partnership <ArrowRight className="w-5 h-5" />
+            </Link>
+          </motion.div>
         </div>
       </section>
 

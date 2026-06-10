@@ -5,9 +5,8 @@ import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 
 const navLinks = [
-  { label: 'Home', href: '#home', type: 'anchor' },
+{ label: 'Home', href: 'Home', type: 'page' },
   { label: 'About', href: 'About', type: 'page' },
-  { label: 'Featured', href: '#featured', type: 'anchor' },
   { label: 'Resume', href: 'Resume', type: 'page' },
   { label: 'Portfolio', href: 'Portfolio', type: 'page' },
 
@@ -58,13 +57,12 @@ export default function Navigation({ brandName = 'C8Matrix' }) {
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="flex items-center justify-between h-20">
             {/* Logo */}
-            <a 
-              href="#home" 
-              onClick={(e) => { e.preventDefault(); scrollToSection('#home'); }}
+            <Link 
+              to="/"
               className="text-2xl font-bold tracking-tighter text-white hover:text-white/80 transition-colors"
             >
               {brandName}
-            </a>
+            </Link>
 
             {/* Desktop Nav */}
             <div className="hidden lg:flex items-center gap-1">
