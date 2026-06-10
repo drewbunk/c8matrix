@@ -61,12 +61,12 @@ export default function About() {
             className="relative"
           >
             {sortedPhotos.length > 0 ? (
-              <div className="flex gap-8 animate-scroll">
+              <div className="flex animate-scroll">
                 {/* Double the photos for seamless loop */}
                 {[...sortedPhotos, ...sortedPhotos].map((photo, i) => (
                   <div
                     key={`${photo.id}-${i}`}
-                    className="relative flex-shrink-0 w-[85vw] md:w-[70vw] lg:w-[60vw] aspect-[21/9] rounded-2xl overflow-hidden group"
+                    className="relative flex-shrink-0 w-[80vw] md:w-[55vw] lg:w-[45vw] aspect-[16/9] rounded-2xl overflow-hidden group mr-6"
                   >
                     <img
                       src={photo.imageUrl}
@@ -95,12 +95,13 @@ export default function About() {
               transform: translateX(0);
             }
             100% {
-              transform: translateX(calc(-100% / 2 - 1rem));
+              transform: translateX(-50%);
             }
           }
           
           .animate-scroll {
-            animation: scroll 20s linear infinite;
+            animation: scroll 18s linear infinite;
+            will-change: transform;
           }
           
           .animate-scroll:hover {
