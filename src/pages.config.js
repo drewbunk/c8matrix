@@ -14,6 +14,7 @@ import PaymentSuccess from './pages/PaymentSuccess';
 import Portfolio from './pages/Portfolio';
 import ProjectDetails from './pages/ProjectDetails';
 import Resume from './pages/Resume';
+import Partnership from './pages/Partnership';
 import __Layout from './Layout.jsx';
 
 
@@ -34,6 +35,7 @@ export const PAGES = {
     "Portfolio": Portfolio,
     "ProjectDetails": ProjectDetails,
     "Resume": Resume,
+    "Partnership": Partnership,
 }
 
 export const pagesConfig = {
