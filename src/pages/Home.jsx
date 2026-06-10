@@ -37,14 +37,23 @@ export default function Home() {
     queryFn: () => base44.entities.Product.list(),
   });
 
+  const { data: portfolioItems } = useQuery({
+    queryKey: ['portfolio'],
+    queryFn: () => base44.entities.Portfolio.list(),
+  });
+
   // Get first settings record or use defaults
   const siteSettings = settings?.[0] || {};
+
+  const reels = [...(portfolioItems || [])]
+    .filter(item => item.fileType === 'reel')
+    .sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0));
 
   return (
     <div className="min-h-screen bg-black text-white">
       <Navigation brandName={siteSettings.brandName} />
       
-      <HeroSection settings={siteSettings} projects={projects || []} />
+      <HeroSection settings={siteSettings} projects={projects || []} reels={reels} />
       
       <VideoReelSection settings={siteSettings} />
       
