@@ -8,7 +8,6 @@ import AboutSection from '@/components/home/AboutSection';
 import VideoReelSection from '@/components/home/VideoReelSection';
 import FeaturedSection from '@/components/home/FeaturedSection';
 
-import PortfolioSection from '@/components/home/PortfolioSection';
 import ShopSection from '@/components/home/ShopSection';
 import ContactSection from '@/components/home/ContactSection';
 import Footer from '@/components/home/Footer';
@@ -60,8 +59,6 @@ export default function Home() {
       <FeaturedSection featuredContent={featuredContent || []} />
       
 
-
-      <PortfolioSection projects={projects || []} />
 
       <ShopSection products={products || []} />
 
