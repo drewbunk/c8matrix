@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { motion } from 'framer-motion';
 import Footer from '@/components/home/Footer';
 import ReelsSection from '@/components/portfolio/ReelsSection';
+import PortfolioCarousel from '@/components/portfolio/PortfolioCarousel';
 
 const typeColors = {
   App: 'bg-blue-500/10 text-blue-400',
@@ -217,6 +218,9 @@ export default function Portfolio() {
 
       {/* Content */}
       <div className="pt-20">
+        {/* Photo Carousel */}
+        <PortfolioCarousel />
+
         {/* Hero Section */}
         <section className="py-20 px-6 lg:px-8 bg-gradient-to-b from-zinc-950 to-black">
           <div className="max-w-7xl mx-auto text-center">
