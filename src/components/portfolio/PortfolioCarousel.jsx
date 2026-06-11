@@ -2,7 +2,8 @@ import React from 'react';
 
 const images = [
   'https://media.base44.com/images/public/695f1f19128f966dc5681717/adb0963c9_C8service.png',
-  'https://media.base44.com/images/public/695f1f19128f966dc5681717/67d20494b_ChatGPTImageJun10202612_47_47PM.png',
+  'https://media.base44.com/images/public/695f1f19128f966dc5681717/4aa00d61b_Zo6Howto.png',
+  'https://media.base44.com/images/public/695f1f19128f966dc5681717/139d84a59_ChatGPTImageMay29202606_19_49PM.png',
   'https://media.base44.com/images/public/695f1f19128f966dc5681717/39c5c487f_D32A3764-6AAF-439F-BE8C-AF2CBF212F02.png',
   'https://media.base44.com/images/public/695f1f19128f966dc5681717/8bec21bbf_3837B597-250E-4E04-AB33-4968CC092FF2.png',
 ];
