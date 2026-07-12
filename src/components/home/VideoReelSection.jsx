@@ -56,6 +56,9 @@ export default function VideoReelSection({ settings }) {
     }
     
     if (heroVideoType === 'mp4_url' && heroVideoUrl) {
+      const ext = heroVideoUrl.split('.').pop().toLowerCase().split('?')[0];
+      const mimeMap = { mp4: 'video/mp4', mov: 'video/mp4', webm: 'video/webm', ogg: 'video/ogg' };
+      const mimeType = mimeMap[ext] || 'video/mp4';
       return (
         <video
           ref={videoRef}
@@ -66,7 +69,8 @@ export default function VideoReelSection({ settings }) {
           className="absolute inset-0 w-full h-full object-cover"
           poster={heroPosterImageUrl}
         >
-          <source src={heroVideoUrl} type="video/mp4" />
+          <source src={heroVideoUrl} type={mimeType} />
+          <source src={heroVideoUrl} type="video/quicktime" />
         </video>
       );
     }
