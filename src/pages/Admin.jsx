@@ -732,7 +732,7 @@ export default function Admin() {
     { key: 'title', label: 'Title', type: 'text' },
     { key: 'description', label: 'Description', type: 'textarea' },
     { key: 'fileUrl', label: 'File URL', type: 'text', fileUpload: true },
-    { key: 'fileType', label: 'File Type', type: 'select', options: ['pdf', 'image', 'video', 'youtube', 'document'] },
+    { key: 'fileType', label: 'File Type', type: 'select', options: ['pdf', 'image', 'video', 'youtube', 'document', 'reel'] },
     { key: 'thumbnailUrl', label: 'Thumbnail URL (optional)', type: 'text', fileUpload: true },
     { key: 'category', label: 'Category', type: 'text', placeholder: 'e.g., Presentations, Case Studies' },
     { key: 'sortOrder', label: 'Sort Order', type: 'number' },
